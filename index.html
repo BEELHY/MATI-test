@@ -6,75 +6,173 @@
     <title>MATI 莫纳什人格测试</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 莫纳什蓝主题色 */
         .bg-monash { background-color: #006DAE; }
         .text-monash { color: #006DAE; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
 
-    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center">
+    <div class="bg-white p-6 md:p-10 rounded-2xl shadow-xl max-w-lg w-full text-center relative overflow-hidden">
         
-        <div id="welcome-screen">
-            <h1 class="text-3xl font-bold text-monash mb-4">MATI 莫纳什测试</h1>
-            <p class="text-gray-600 mb-8">测测你是哪种莫纳什主角？</p>
-            <button onclick="startTest()" class="bg-monash text-white font-bold py-3 px-8 rounded-full hover:bg-blue-800 transition">
+        <div id="welcome-screen" class="fade-in">
+            <h1 class="text-4xl font-extrabold text-monash mb-4">MATI 测试</h1>
+            <p class="text-gray-600 mb-8 font-medium">寻找你在莫纳什的究极生存人设</p>
+            <button onclick="startTest()" class="bg-monash text-white font-bold text-lg py-4 px-10 rounded-full hover:bg-blue-800 transition shadow-lg transform hover:scale-105">
                 开始测试
             </button>
         </div>
 
-        <div id="question-screen" class="hidden">
-            <p class="text-sm text-gray-400 mb-2">第 1/1 题</p>
-            <h2 class="text-xl font-bold text-gray-800 mb-6">周末中午饿醒了，你会去哪吃饭？</h2>
-            
-            <div class="space-y-4">
-                <button onclick="answerQuestion('city')" class="w-full text-left p-4 border border-gray-300 rounded-lg hover:border-[#006DAE] hover:bg-blue-50 transition">
-                    A. 坐火车进城去吃网红 Brunch
-                </button>
-                <button onclick="answerQuestion('suburb')" class="w-full text-left p-4 border border-gray-300 rounded-lg hover:border-[#006DAE] hover:bg-blue-50 transition">
-                    B. 穿着睡衣去楼下亚超买速冻饺子
-                </button>
+        <div id="question-screen" class="hidden fade-in">
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+                <div id="progress-bar" class="bg-monash h-2.5 rounded-full transition-all duration-300" style="width: 5%"></div>
             </div>
+            <p id="progress-text" class="text-sm text-gray-500 mb-6 font-bold">1 / 20</p>
+            
+            <h2 id="question-text" class="text-xl md:text-2xl font-bold text-gray-800 mb-8 text-left leading-relaxed">加载中...</h2>
+            
+            <div id="options-container" class="space-y-4">
+                </div>
         </div>
 
-        <div id="result-screen" class="hidden">
-            <h2 class="text-2xl font-bold text-monash mb-4">你的测试结果是：</h2>
-            <h1 id="result-title" class="text-4xl font-extrabold text-gray-900 mb-2">计算中...</h1>
-            <p id="result-desc" class="text-gray-600 mb-8">...</p>
-            <button onclick="location.reload()" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-full hover:bg-gray-300 transition">
-                再测一次
+        <div id="result-screen" class="hidden fade-in">
+            <p class="text-gray-500 font-bold mb-2">你的 MATI 专属代号是</p>
+            <h1 id="result-code" class="text-5xl font-black text-monash mb-4">CGOF</h1>
+            <h2 id="result-title" class="text-2xl font-bold text-gray-800 mb-6">计算中...</h2>
+            
+            <div class="bg-blue-50 p-6 rounded-xl text-left mb-8 border border-blue-100">
+                <p id="result-desc" class="text-gray-700 leading-relaxed">...</p>
+            </div>
+
+            <button onclick="location.reload()" class="bg-gray-200 text-gray-800 font-bold py-3 px-8 rounded-full hover:bg-gray-300 transition">
+                重新测试
             </button>
         </div>
 
     </div>
 
     <script>
+        // 将你提供的 20 道题转化为 JS 数组格式
+        const questions = [
+            // 维度一：C vs S
+            { q: "1. 马上要签下学期的房子了，你的租房首选地段是？", opts: [ {text: "A. 必须 City！下楼就是维妈、唐人街...", val: "C"}, {text: "B. 选个折中点吧，比如 Carnegie 或者 Caufield 沿线...", val: "B"}, {text: "C. 绝对是 Clayton/Caulfield 步行区。村里安静安逸...", val: "S"} ] },
+            { q: "2. 周末中午饿醒了，打开手机想解决午饭，你会选择？", opts: [ {text: "A. 精心打扮一番，坐火车进城去吃网红 Brunch...", val: "C"}, {text: "B. 去附近的 Chadstone 或 M-City 吃一顿...", val: "B"}, {text: "C. 穿着睡衣下楼去亚超买点速冻饺子，或者直接外卖...", val: "S"} ] },
+            { q: "3. 刚交完一个极其痛苦的、占总分 40% 的 Assignment，你决定如何犒劳自己？", opts: [ {text: "A. 进城吃顿平时舍不得吃的米其林或高档日料大餐！", val: "C"}, {text: "B. 直接冲向 The Nott 或者常去的酒吧，先干三大杯再说！", val: "B", isAlcohol: true}, {text: "C. 谁也别烦我，我要把手机静音，睡个天昏地暗。", val: "S"} ] },
+            { q: "4. 没课的下午，你最常出没的地点是？", opts: [ {text: "A. City 的各大巷子和咖啡馆，喜欢有氛围感的地方。", val: "C"}, {text: "B. 学校的 Campus Centre 或者周边咖啡店...", val: "B"}, {text: "C. 只要没课就立刻闪现回宿舍/家里...", val: "S"} ] },
+            { q: "5. 朋友约你周末聚一聚，你最希望定在哪？", opts: [ {text: "A. 当然是 City！吃完饭还能去打个卡、唱个歌。", val: "C"}, {text: "B. 看大家住哪，找个在大家通勤路线中间的地方。", val: "B"}, {text: "C. “要不你们买点菜来我家做饭吧？”（别让我出村）", val: "S"} ] },
+            // 维度二：G vs D
+            { q: "6. Moodle 上刚发布了一篇三周后交的 Essay，你的内心 OS 是：", opts: [ {text: "A. 赶紧打开 Word 建好文档排好版...", val: "G"}, {text: "B. 先粗略扫一眼题目要求，在脑子里构思一下...", val: "B"}, {text: "C. 三周？火速关掉界面，DDL 前三天再体会心跳的快感。", val: "D"} ] },
+            { q: "7. 这学期的 Lecture 录像，你通常是怎么处理的？", opts: [ {text: "A. 每周按时看，原速播放，笔记记得像一本教科书。", val: "G"}, {text: "B. 攒个两三周看一次，用 1.25 或 1.5 倍速过重点。", val: "B"}, {text: "C. 考前直接看学霸总结的笔记或者开 2 倍速量子速读。", val: "D"} ] },
+            { q: "8. 小组作业终于开完第一次会了，接下来你会提议？", opts: [ {text: "A. 建立 Google Doc，立刻分配好任务和时间表。", val: "G"}, {text: "B. “相聚就是缘，要不今晚先去找个地方喝一杯破个冰？”", val: "B", isAlcohol: true}, {text: "C. 建个微信群发个表情包打哈哈，然后各回各家...", val: "D"} ] },
+            { q: "9. 期末 SWOTVAC (备考周) 的日常，你属于哪种画风？", opts: [ {text: "A. 驻扎在图书馆的“定海神针”，每天按计划复习。", val: "G"}, {text: "B. 跟着大部队去图书馆，学一会儿玩一会儿手机...", val: "B"}, {text: "C. 开启“女娲补天”模式，试图在 48 小时内学完一学期的课。", val: "D"} ] },
+            { q: "10. 当遇到实在解不出的题目或不会写的代码时：", opts: [ {text: "A. 查阅各种 Reference，发邮件问 Tutor，不搞懂誓不罢休。", val: "G"}, {text: "B. 问问身边的同学有没有思路，稍微借鉴一下。", val: "B"}, {text: "C. 使用 ChatGPT 魔法，或者直接玄学作答，尽人事听天命。", val: "D"} ] },
+            // 维度三：O vs H
+            { q: "11. 周五晚上的理想状态是：", opts: [ {text: "A. 各种局走起！剧本杀、KTV、狼人杀，燥起来。", val: "O"}, {text: "B. 看有没有好朋友约我，有局就去，没局在家也行。", val: "B"}, {text: "C. 终于可以回家洗个澡躺床上打开 Netflix/B站了...", val: "H"} ] },
+            { q: "12. 朋友突然拉你去参加一个你基本都不认识的局，你的第一反应是：", opts: [ {text: "A. “走啊！又可以认识新朋友了，顺便拓宽一下圈子。”", val: "O"}, {text: "B. “有酒吗？喝什么局？只要有酒我就去！”", val: "B", isAlcohol: true}, {text: "C. “啊…我有点事/有点累了。” 陌生人社交太耗电。", val: "H"} ] },
+            { q: "13. 新学期 O-Week 逛社团招新摊位：", opts: [ {text: "A. 兴致勃勃到处逛，加了十几个新生群，主动搭话。", val: "O"}, {text: "B. 跟着熟悉的同学走走看看，遇到感兴趣的才问。", val: "B"}, {text: "C. 戴着耳机快速穿过人群，拿了免费笔就匆匆撤退...", val: "H"} ] },
+            { q: "14. 在校园里偶遇只见过一次面的同学：", opts: [ {text: "A. 主动热情地挥手大喊名字，凑上去聊两句。", val: "O"}, {text: "B. 眼神对上了就微笑点头致意，不特意停下来寒暄。", val: "B"}, {text: "C. 默默低下头假装看手机，迅速加快脚步走开...", val: "H"} ] },
+            { q: "15. 你的微信/聊天软件回复状态通常是：", opts: [ {text: "A. 永远在秒回，各种群聊都有我的身影，消息爆炸。", val: "O"}, {text: "B. 正常速度回复，工作/学习群稍微晚点看。", val: "B"}, {text: "C. 轮回。有时候在心里回过了，就以为自己真的回了。", val: "H"} ] },
+            // 维度四：F vs E
+            { q: "16. 经历了一整天高强度的早八+满课，你晚上的状态是：", opts: [ {text: "A. 满血复活！还能去撸个铁，或者跟朋友去打球。", val: "F"}, {text: "B. 感觉有点虚脱，吃顿好吃的勉强能恢复一半体力。", val: "B"}, {text: "C. 物理和精神双重宕机。已开启“极限省电模式”...", val: "E"} ] },
+            { q: "17. 放小长假（比如 Mid-sem break）的计划安排：", opts: [ {text: "A. 完美的“特种兵”行程。自驾游，步数两万起...", val: "F"}, {text: "B. 找个风景好、离家不远的地方随便逛逛，主打休闲。", val: "B"}, {text: "C. “换个地方睡觉”或者直接“家里躺”，静静发呆。", val: "E"} ] },
+            { q: "18. 经历了一连串的打击（挂科边缘、被开罚单），你回血的方式是：", opts: [ {text: "A. 去操场狂跑五公里出汗，或者拉着朋友疯狂吐槽...", val: "F"}, {text: "B. 默默去提一打酒，今晚用酒精冲刷所有的悲伤。", val: "B", isAlcohol: true}, {text: "C. 点一顿极其罪恶的垃圾食品外卖，然后狠狠睡上 12 小时。", val: "E"} ] },
+            { q: "19. 参加一节长达 2 小时、内容极其枯燥的 Seminar：", opts: [ {text: "A. 依然能保持专注，随时准备举手回答问题或互动。", val: "F"}, {text: "B. 前 45 分钟清醒，中间去上个厕所，后半段神游。", val: "B"}, {text: "C. 选个后排靠角落的绝佳位置，双眼放空，灵魂出窍。", val: "E"} ] },
+            { q: "20. 每天早上的起床困难指数：", opts: [ {text: "A. 闹钟一响立刻弹射起步，甚至能在课前化个全妆。", val: "F"}, {text: "B. 需要按两次 Snooze 才能勉强爬起来，但基本不迟到。", val: "B"}, {text: "C. 起床全靠今天有没有必须交的 Due，否则睡到地老天荒。", val: "E"} ] }
+        ];
+
+        let currentIndex = 0;
+        let scores = { C:0, S:0, G:0, D:0, O:0, H:0, F:0, E:0 };
+        let bCount = 0;
+        let alcoholCount = 0;
+
         function startTest() {
-            // 隐藏欢迎页，显示答题页
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('question-screen').classList.remove('hidden');
+            renderQuestion();
         }
 
-        function answerQuestion(choice) {
-            // 隐藏答题页，显示结果页
+        function renderQuestion() {
+            const qData = questions[currentIndex];
+            document.getElementById('progress-text').innerText = `${currentIndex + 1} / 20`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / 20) * 100}%`;
+            document.getElementById('question-text').innerText = qData.q;
+            
+            const optsContainer = document.getElementById('options-container');
+            optsContainer.innerHTML = '';
+            
+            // 重新添加 fade-in 动画效果
+            optsContainer.classList.remove('fade-in');
+            void optsContainer.offsetWidth; // 触发重绘
+            optsContainer.classList.add('fade-in');
+
+            qData.opts.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 md:p-5 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition font-medium text-gray-700 shadow-sm";
+                btn.innerText = opt.text;
+                btn.onclick = () => handleAnswer(opt.val, opt.isAlcohol);
+                optsContainer.appendChild(btn);
+            });
+        }
+
+        function handleAnswer(val, isAlcohol) {
+            // 记录分数
+            if (val === 'B') {
+                bCount++;
+                if (isAlcohol) alcoholCount++;
+            } else {
+                scores[val]++;
+            }
+
+            // 下一题或结算
+            currentIndex++;
+            if (currentIndex < questions.length) {
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
             document.getElementById('question-screen').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
 
-            // 极简判断逻辑：选了什么就出什么结果
-            let title = "";
-            let desc = "";
+            let finalCode = "";
+            let resultName = "";
+            let resultDesc = "";
 
-            if (choice === 'city') {
-                title = "华尔街之狼";
-                desc = "你向往都市繁华，哪怕每天要在 Flinders 挤火车，也要捍卫都市丽人的尊严！";
+            // 彩蛋逻辑拦截
+            if (alcoholCount === 4 && bCount <= 8) {
+                finalCode = "ALCH";
+                resultName = "绝命酒蒙子 (雷神)";
+                resultDesc = "你的血液里 80% 是 Swanston St 的酒，剩下 20% 是 Clayton 的风。作业可以不交，局不能不去！";
+            } else if (bCount >= 10) {
+                finalCode = "B-B-B-B";
+                resultName = "莫纳什水豚 (Capybara)";
+                resultDesc = "终极端水大师。情绪稳定得令人害怕。你不是在摆烂，你只是达到了留学的最高境界：Inner Peace。";
             } else {
-                title = "莫纳什水豚";
-                desc = "你喜欢 Clayton 的安逸，拒绝内耗，步行上学，东南区就是你的快乐老家。";
+                // 常规计分逻辑：比较每组对立维度的分数
+                finalCode += (scores.C >= scores.S) ? "C" : "S";
+                finalCode += (scores.G >= scores.D) ? "G" : "D";
+                finalCode += (scores.O >= scores.H) ? "O" : "H";
+                finalCode += (scores.F >= scores.E) ? "F" : "E";
+
+                // 这里为了演示，我们放两个极端的示例数据，后续再接上完整的 16 人格数据库
+                if (finalCode === "CGOF") {
+                    resultName = "华尔街之狼";
+                    resultDesc = "满级人类精英。简历完美，白天在 Clayton 卷学术，晚上回 City 喝香槟，精力无限的职场预备役。";
+                } else if (finalCode === "SDHE") {
+                    resultName = "东南区阿甘";
+                    resultDesc = "极限摆烂，终极节电。住在村里深居简出，作业永远拖到最后一秒，主打一个随缘 Pass。";
+                } else {
+                    resultName = "你测出了专属组合！";
+                    resultDesc = "快去截图分享你的隐藏属性吧！（正式上线时这里会显示完整的角色文案）";
+                }
             }
 
-            // 把结果填入页面
-            document.getElementById('result-title').innerText = title;
-            document.getElementById('result-desc').innerText = desc;
+            document.getElementById('result-code').innerText = finalCode;
+            document.getElementById('result-title').innerText = resultName;
+            document.getElementById('result-desc').innerText = resultDesc;
         }
     </script>
 </body>
