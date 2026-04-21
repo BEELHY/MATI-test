@@ -12,6 +12,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         /* 隐藏滚动条 */
         ::-webkit-scrollbar { width: 0px; background: transparent; }
+        body { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-slate-100 flex items-center justify-center min-h-screen p-4 font-sans text-slate-800">
@@ -21,6 +22,9 @@
         <div id="welcome-screen" class="p-10 text-center fade-in">
             <h1 class="text-5xl font-black text-slate-900 mb-2">MATI</h1>
             <p class="text-monash font-bold text-sm tracking-[0.2em] mb-10">莫纳什人格测试</p>
+            <div class="mb-10 text-slate-400 text-xs leading-relaxed">
+                基于四大维度：栖息偏好 / 战斗模式<br>社交雷达 / 能量引擎
+            </div>
             <button onclick="startTest()" class="bg-monash text-white font-bold py-5 px-12 rounded-2xl hover:brightness-110 transition-all w-full shadow-lg text-xl">
                 开始测试
             </button>
@@ -38,7 +42,7 @@
             <div id="options-container" class="space-y-3"></div>
         </div>
 
-        <div id="result-screen" class="hidden fade-in relative">
+        <div id="result-screen" class="hidden fade-in">
             <div class="bg-monash p-8 text-white text-center">
                 <div id="result-code" class="text-6xl font-black mb-2 italic tracking-tighter">TYPE</div>
                 <div id="result-ip" class="text-xl font-bold opacity-90 border-t border-white/20 pt-2 inline-block"></div>
@@ -77,6 +81,9 @@
                 </div>
 
                 <div class="mt-8 space-y-3">
+                    <button onclick="generateShareImage()" class="w-full py-4 bg-green-600 text-white font-bold rounded-2xl shadow-lg hover:bg-green-700 transition-all text-sm flex items-center justify-center">
+                        📸 生成分享海报 (截屏保存)
+                    </button>
                     <button onclick="openArchive()" class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-lg hover:bg-slate-800 transition-all text-sm">
                         📂 查看全图鉴 (MATI Archive)
                     </button>
@@ -93,9 +100,34 @@
                     <h2 class="text-2xl font-black italic text-monash underline decoration-4 underline-offset-4">MATI ARCHIVE</h2>
                     <button onclick="closeArchive()" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 font-bold text-xl">&times;</button>
                 </div>
-                
-                <div id="archive-grid" class="grid grid-cols-2 gap-4 pb-10">
+                <div id="archive-grid" class="grid grid-cols-2 gap-4 pb-10"></div>
+            </div>
+        </div>
+
+        <div id="share-overlay" class="hidden fixed inset-0 bg-slate-900/90 z-[60] flex items-center justify-center p-6 animate-[fadeIn_0.2s]">
+            <div class="relative w-full max-w-sm">
+                <button onclick="closeShare()" class="absolute -top-12 right-0 text-white text-3xl">&times;</button>
+                <div id="poster-area" class="bg-white rounded-[2rem] overflow-hidden shadow-2xl border-4 border-monash">
+                    <div class="bg-monash p-6 text-white text-center">
+                        <p class="text-[10px] tracking-[0.3em] opacity-70 mb-1 uppercase">Monash Persona Indicator</p>
+                        <h3 id="poster-type" class="text-4xl font-black italic tracking-tighter">TYPE</h3>
+                        <p id="poster-name" class="text-lg font-bold mt-1"></p>
                     </div>
+                    <div class="p-4">
+                        <img id="poster-img" src="" class="w-full rounded-xl mb-4 border border-slate-100">
+                        <div class="bg-slate-50 p-4 rounded-xl border-l-4 border-monash mb-4">
+                            <p id="poster-motto" class="text-slate-800 font-bold text-sm leading-tight italic"></p>
+                        </div>
+                        <div class="flex justify-between items-center px-2">
+                            <div class="text-left leading-tight">
+                                <p class="text-[10px] text-slate-400 font-bold uppercase">Candidate</p>
+                                <p class="text-xs font-black text-monash">MATI 认证莫纳什校友</p>
+                            </div>
+                            <div class="w-12 h-12 bg-slate-100 rounded flex items-center justify-center text-[7px] text-slate-400 text-center p-1 border border-dashed border-slate-300 italic">扫码<br>测试</div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-white text-center mt-6 text-sm font-medium animate-pulse opacity-70">—— 截屏保存，分享你的莫纳什人格 ——</p>
             </div>
         </div>
 
@@ -106,42 +138,42 @@
             "CGOF": { name: "华尔街之狼", ip: "乔丹·贝尔福特", motto: "哪怕每天要在Flinders挤火车，我也要在CBD赢过所有人。", desc: "简历厚过砖，白天Clayton卷GPA，晚上City卷Networking。", nemesis: "路人A、图书馆保安", partner: "美国队长", enemy: "大雄" },
             "CGOE": { name: "穿普拉达的女王", ip: "米兰达 (Miranda)", motto: "如果拿不到HD，那一定是因为你穿得太土了。", desc: "精致的代名词。住在City高层，拿最稳的分，喝最贵的Brunch。", nemesis: "修路噪音", partner: "芭比", enemy: "阿甘" },
             "CGHF": { name: "蝙蝠侠 (Batman)", ip: "布鲁斯·韦恩", motto: "我不是在Matheson，我是在守护我的哥谭。", desc: "住在City百万公寓里独处。夜色是他的保护色，刷题是他的修行。", nemesis: "Matheson五楼的咳嗽声", partner: "钢铁侠", enemy: "杰克船长" },
-            "CGHE": { name: "神探夏洛克", ip: "Sherlock Holmes", motto: "平凡的校园生活只会让大脑生锈。", desc: "极高智商，低耗电模式。住在繁华中心但只活在自己的逻辑里。", nemesis: "没有逻辑的小组队友", partner: "灭霸", enemy: "罗恩" },
+            "CGHE": { name: "神探夏洛克", ip: "Sherlock Holmes", motto: "平凡的校园生活只会让大脑生锈。", desc: "极高智商，低耗电模式。住在繁华中心但只活在自己的逻辑里。", nemesis: "没有逻辑的小组队友", partner: "灭霸", enemy: "罗恩·韦斯莱" },
             "SGOF": { name: "美国队长", ip: "Steve Rogers", motto: "I can do this all day (指的是复习)。", desc: "莫纳什正义化身，Clayton领袖。GPA 4.0且精力无限的六边形战士。", nemesis: "深夜不睡觉的舍友", partner: "华尔街之狼", enemy: "了不起的盖茨比" },
             "SGOE": { name: "芭比", ip: "Barbie", motto: "在Clayton，每天都是最棒的一天！", desc: "校园社交中心。虽然也努力学习，但更爱和朋友们聚在一起闪耀。", nemesis: "掉妆、8点的早课", partner: "穿普拉达的女王", enemy: "绿巨人" },
             "SGHF": { name: "灭霸", ip: "Thanos", motto: "只要响指一响，Assignment就会消失一半。", desc: "极度自律。不需要社交，只需要更快的网速和更安静的图书馆。", nemesis: "所有形式的社交聚会", partner: "神探夏洛克", enemy: "杰克船长" },
             "SGHE": { name: "甘道夫", ip: "Gandalf", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "睿智但慢节奏。深居简出，只在Final期间现身施展魔法。", nemesis: "查重报告 (Turnitin)", partner: "神探夏洛克", enemy: "钢铁侠" },
             "CDOF": { name: "了不起的盖茨比", ip: "Gatsby", motto: "在那盏绿灯熄灭前，我一定能交上我的Essay。", desc: "住在城里，夜夜笙歌。挥霍青春，然后在清晨极限赶Due。", nemesis: "23:59的闹钟", partner: "杰克船长", enemy: "美国队长" },
-            "CDOE": { name: "杰克船长", ip: "Jack Sparrow", motto: "你们会永远记住这一天，因为你们差一点就挂掉了我的Assignment！", desc: "又菜又爱玩。虽然满身Due债，但总能靠运气和奇葩操作险象环生。", nemesis: "学校停车位、Final", partner: "了不起的盖茨比", enemy: "灭霸" },
+            "CDOE": { name: "杰克船长", ip: "Jack Sparrow", motto: "你们会永远记住这一天，因为你们差一点就过不了Assignment！", desc: "又菜又爱玩。虽然满身Due债，但总能靠运气和奇葩操作险象环生。", nemesis: "学校停车位、Final", partner: "了不起的盖茨比", enemy: "灭霸" },
             "CDHF": { name: "钢铁侠 (Iron Man)", ip: "Tony Stark", motto: "我不需要睡觉，我只需要能量棒和红牛。", desc: "天才但熬夜成瘾。靠高科技和毅力在深夜创造神迹，社交电量极低。", nemesis: "低电量警告", partner: "蝙蝠侠", enemy: "甘道夫" },
-            "CDHE": { name: "大雄 (Nobita)", ip: "野比大雄", motto: "多啦A梦，快借我一个写Assignment的道具！", desc: "住在City最贵的房，睡最长的觉。极限摆烂，遇到Due就求救。", nemesis: "所有的考试", partner: "罗恩", enemy: "华尔街之狼" },
+            "CDHE": { name: "大雄 (Nobita)", ip: "野比大雄", motto: "多啦A梦，快借我一个写Assignment的道具！", desc: "住在City最贵的房，睡最长的觉。极限摆烂，遇到Due就求救。", nemesis: "所有的考试", partner: "罗恩·韦斯莱", enemy: "华尔街之狼" },
             "SDOF": { name: "家人侠 (Dom)", ip: "Dominic Toretto", motto: "Family！", desc: "“Family”战神，东南区最强局王。", nemesis: "没有外卖的深夜", partner: "芭比", enemy: "灭霸" },
-            "SDOE": { name: "罗恩·韦斯莱", ip: "Ron Weasley", motto: "为什么总是我？我只是想在东南区安静地吃个鸡腿。", desc: "东南区摆烂天才。虽然能躺平绝不站着，但总能莫名其妙跟着混过考试。", nemesis: "蜘蛛、高难度的Lab", partner: "大雄", enemy: "神探夏洛克" },
+            "SDOE": { name: "罗恩·韦斯莱", ip: "Ron Weasley", motto: "为什么总是我？我只是想在东南区吃个鸡腿。", desc: "东南区摆烂天才。虽然能躺平绝不站着，但总能莫名其妙跟着混过考试。", nemesis: "蜘蛛、高难度的Lab", partner: "大雄", enemy: "神探夏洛克" },
             "SDHF": { name: "绿巨人 (Hulk)", ip: "Bruce Banner", motto: "不要激怒我，否则我会把电脑屏幕拍碎！", desc: "平时沉默寡言。被DDL激怒后瞬间变身爆肝狂魔，横扫所有论文。", nemesis: "电脑死机", partner: "钢铁侠", enemy: "芭比" },
-            "SDHE": { name: "阿甘 (Gump)", ip: "Forrest Gump", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "思想单纯，拒绝复杂社交。坐在长椅上等 Pass 的校园持久幸存者。", nemesis: "复杂的Group Work", partner: "莫纳什水豚", enemy: "穿普拉达的女王" },
-            "ALCH": { name: "绝命酒蒙子", ip: "雷神索尔 (Thor)", motto: "我的血液里80%是Swanston St的酒，剩下20%是Clayton的风。", desc: "作业可以不交，局不能不去，你是莫纳什酒精文化的灵魂。", nemesis: "全校Tutor", partner: "杰克船长", enemy: "Early Birds" },
+            "SDHE": { name: "阿甘 (Gump)", ip: "Forrest Gump", motto: "生活就像一盒巧克力，你永远不知道下一门会不会挂。", desc: "思想单纯，拒绝复杂社交。坐在长椅上等 Pass 的校园持久幸存者。", nemesis: "复杂的Group Work", partner: "莫纳什水豚", enemy: "穿普拉达的女王" },
+            "ALCH": { name: "绝命酒蒙子", ip: "雷神索尔 (Thor)", motto: "我的血液里80%是酒，20%是Clayton的妖风。", desc: "作业可以不交，局不能不去，你是莫纳什酒精文化的灵魂。", nemesis: "全校Tutor", partner: "杰克船长", enemy: "早八人 (Early Birds)" },
             "B-B-B-B": { name: "莫纳什水豚", ip: "Capybara", motto: "只要我不发疯，Clayton的妖风就吹不到我。", desc: "情绪稳定得令人害怕。达到留学的最高境界：Inner Peace。", nemesis: "DDL", partner: "阿甘", enemy: "所有人(开玩笑的)" }
         };
 
         const questions = [
-            { q: "1. 马上要签下学期的房子了，你的租房首选地段是？", opts: [ {text: "A. 必须 City！下楼就是维妈、唐人街...", val: "C"}, {text: "B. 选个折中点吧，比如 Carnegie 或者 Caufield...", val: "B"}, {text: "C. 绝对是 Clayton/Caufield 步行区...", val: "S"} ] },
+            { q: "1. 马上要签下学期的房子了，你的租房首选地段是？", opts: [ {text: "A. 必须 City！下楼就是维妈、唐人街...", val: "C"}, {text: "B. 选个折中点吧，比如 Carnegie 或者 Caufield...", val: "B"}, {text: "C. 绝对是 Clayton/Caulfield 步行区...", val: "S"} ] },
             { q: "2. 周末中午饿醒了，打开手机想解决午饭，你会选择？", opts: [ {text: "A. 坐火车进城去吃网红 Brunch...", val: "C"}, {text: "B. 去附近的 Chadstone 或 M-City 吃一顿...", val: "B"}, {text: "C. 穿着睡衣下楼去亚超买点速冻饺子...", val: "S"} ] },
-            { q: "3. 刚交完一个极其痛苦的 Assignment，你决定如何犒劳自己？", opts: [ {text: "A. 进城吃顿平时舍不得吃的米其林...", val: "C"}, {text: "B. 【 🍺 】 直接冲向 The Nott 先干三大杯！", val: "B", isAlc: true}, {text: "C. 谁也别烦我，睡个天昏地暗。", val: "S"} ] },
+            { q: "3. 【 🍺 】刚交完一个极其痛苦的 Assignment，你决定犒劳自己？", opts: [ {text: "A. 进城吃顿平时舍不得吃的米其林...", val: "C"}, {text: "B. 直接冲向 The Nott 先干三大杯！", val: "B", isAlc: true}, {text: "C. 谁也别烦我，睡个天昏地暗。", val: "S"} ] },
             { q: "4. 没课的下午，你最常出没的地点是？", opts: [ {text: "A. City 的各大巷子和咖啡馆...", val: "C"}, {text: "B. 学校的 Campus Centre 周边...", val: "B"}, {text: "C. 只要没课就立刻闪现回宿舍...", val: "S"} ] },
             { q: "5. 朋友约你周末聚一聚，你最希望定在哪？", opts: [ {text: "A. 当然是 City！唱个歌打个卡。", val: "C"}, {text: "B. 找个在大家通勤路线中间的地方。", val: "B"}, {text: "C. 要不你们买点菜来我家做饭吧？", val: "S"} ] },
-            { q: "6. Moodle 上刚发布了一篇三周后交的 Essay，你的内心 OS 是：", opts: [ {text: "A. 赶紧打开 Word 建好文档排版...", val: "G"}, {text: "B. 先粗略扫一眼，构思一下...", val: "B"}, {text: "C. 三周？那不就是下个世纪的事？", val: "D"} ] },
+            { q: "6. Moodle 上发布了一篇三周后交的 Essay，你的内心 OS 是：", opts: [ {text: "A. 赶紧打开 Word 建好文档排版...", val: "G"}, {text: "B. 先粗略扫一眼，构思一下...", val: "B"}, {text: "C. 三周？那不就是下个世纪的事？", val: "D"} ] },
             { q: "7. 这学期的 Lecture 录像，你通常是怎么处理的？", opts: [ {text: "A. 每周按时看，笔记记得非常全。", val: "G"}, {text: "B. 攒个两三周看一次，倍速播放。", val: "B"}, {text: "C. 考前开启“量子速读”模式。", val: "D"} ] },
-            { q: "8. 小组作业终于开完第一次会了，接下来你会提议？", opts: [ {text: "A. 建立 Google Doc 分配任务进度。", val: "G"}, {text: "B.【 🍺 】今晚先找个地方喝一杯破个冰？", val: "B", isAlc: true}, {text: "C. 发个表情包，等别人先推进。", val: "D"} ] },
-            { q: "9. 期末备考周 (SWOTVAC) 的日常，你属于哪种画画？", opts: [ {text: "A. 驻扎在图书馆的“定海神针”。", val: "G"}, {text: "B. 学一会儿玩一会儿手机的陪伴式复习。", val: "B"}, {text: "C. 开启“女娲补天”模式，48小时学完。", val: "D"} ] },
-            { q: "10. 当遇到实在解不出的题目或不会写的代码时：", opts: [ {text: "A. 发邮件问 Tutor，不搞懂誓不罢休。", val: "G"}, {text: "B. 问问同学思路，稍微借鉴。", val: "B"}, {text: "C. 使用 ChatGPT 魔法，尽人事听天命。", val: "D"} ] },
+            { q: "8. 【 🍺 】小组作业第一次开会后，你会提议？", opts: [ {text: "A. 建立 Google Doc 分配任务进度。", val: "G"}, {text: "B. 今晚先找个地方喝一杯破个冰？", val: "B", isAlc: true}, {text: "C. 发个表情包，等别人先推进。", val: "D"} ] },
+            { q: "9. 期末备考周 (SWOTVAC) 的日常，你属于哪种？", opts: [ {text: "A. 驻扎在图书馆的“定海神针”。", val: "G"}, {text: "B. 学一会儿玩一会儿手机的陪伴式复习。", val: "B"}, {text: "C. 开启“女娲补天”模式，48小时学完。", val: "D"} ] },
+            { q: "10. 当遇到实在解不出的题目时：", opts: [ {text: "A. 发邮件问 Tutor，不搞懂誓不罢休。", val: "G"}, {text: "B. 问问同学思路，稍微借鉴。", val: "B"}, {text: "C. 使用 ChatGPT 魔法，尽人事听天命。", val: "D"} ] },
             { q: "11. 周五晚上的理想状态是：", opts: [ {text: "A. 各种局走起！剧本杀 KTV。", val: "O"}, {text: "B. 有约就去，没约在家待着也行。", val: "B"}, {text: "C. 宅家洗澡刷剧，太幸福了。", val: "H"} ] },
-            { q: "12. 朋友拉你去参加一个基本不认识的局，你的第一反应：", opts: [ {text: "A. 走啊！又可以认识新朋友了。", val: "O"}, {text: "B.【 🍺 】有酒吗？只要有酒我就去！", val: "B", isAlc: true}, {text: "C. 陌生社交太耗电，不想去。", val: "H"} ] },
-            { q: "13. 新学期 O-Week 逛社团招新摊位：", opts: [ {text: "A. 扫码加十几个群，主动勾搭学长。", val: "O"}, {text: "B. 就跟熟悉的同学走走看看。", val: "B"}, {text: "C. 拿了免费笔和袋子就匆匆撤退。", val: "H"} ] },
+            { q: "12. 【 🍺 】朋友拉你去参加一个你不认识的局：", opts: [ {text: "A. 走啊！又可以认识新朋友了。", val: "O"}, {text: "B. 有酒吗？只要有酒我就去！", val: "B", isAlc: true}, {text: "C. 陌生社交太耗电，不想去。", val: "H"} ] },
+            { q: "13. 新学期 O-Week 逛社团招新摊位：", opts: [ {text: "A. 扫码加十几个群，主动勾搭学长。", val: "O"}, {text: "B. 就跟熟悉的同学走走看看。", val: "B"}, {text: "C. 拿了免费礼品就匆匆撤退。", val: "H"} ] },
             { q: "14. 在校园里偶遇只见过一次面的同学：", opts: [ {text: "A. 主动大喊名字热聊两句。", val: "O"}, {text: "B. 眼神对上了就点头致意。", val: "B"}, {text: "C. 低头假装看手机迅速走开。", val: "H"} ] },
             { q: "15. 你的微信回复状态通常是：", opts: [ {text: "A. 秒回狂人，活跃在各个群聊。", val: "O"}, {text: "B. 正常速度，工作群稍微晚点。", val: "B"}, {text: "C. 轮回，用意念回复过就算回了。", val: "H"} ] },
-            { q: "16. 经历了一天高强度满课，你晚上的状态是：", opts: [ {text: "A. 满血复活去撸铁打球。", val: "F"}, {text: "B. 虚脱，吃顿好的能回一半血。", val: "B"}, {text: "C. 物理宕机，开启极限省电模式。", val: "E"} ] },
+            { q: "16. 经历了一天高强度满课，晚上的状态是：", opts: [ {text: "A. 满血复活去撸铁打球。", val: "F"}, {text: "B. 虚脱，吃顿好的能回一半血。", val: "B"}, {text: "C. 物理宕机，开启极限省电模式。", val: "E"} ] },
             { q: "17. 放小长假的计划安排：", opts: [ {text: "A. 特种兵行程，步数两万起。", val: "F"}, {text: "B. 随便逛逛，主打休闲。", val: "B"}, {text: "C. 换个地方睡觉，静静发呆。", val: "E"} ] },
-            { q: "18. 经历了一连串打击，你回血的方式是：", opts: [ {text: "A. 跑五公里或者疯狂吐槽排空。", val: "F"}, {text: "B.【 🍺 】提一打酒，用酒精冲刷悲伤。", val: "B", isAlc: true}, {text: "C. 点顿罪恶外卖，睡 12 小时。", val: "E"} ] },
+            { q: "18. 【 🍺 】经历了一连串打击，你回血的方式是：", opts: [ {text: "A. 跑五公里或者疯狂吐槽排空。", val: "F"}, {text: "B. 提一打酒，用酒精冲刷悲伤。", val: "B", isAlc: true}, {text: "C. 点顿罪恶外卖，睡 12 小时。", val: "E"} ] },
             { q: "19. 参加一节长达 2 小时枯燥的 Seminar：", opts: [ {text: "A. 保持专注，积极互动。", val: "F"}, {text: "B. 前段清醒，后半段神游。", val: "B"}, {text: "C. 选后排角落，灵魂出窍。", val: "E"} ] },
             { q: "20. 每天早上的起床困难指数：", opts: [ {text: "A. 弹射起步，还能化个全妆。", val: "F"}, {text: "B. 按两次闹钟，基本不迟到。", val: "B"}, {text: "C. 全靠 Due 续命，否则地老天荒。", val: "E"} ] }
         ];
@@ -165,7 +197,7 @@
             container.innerHTML = '';
             data.opts.forEach(opt => {
                 const b = document.createElement('button');
-                b.className = "w-full text-left p-4 border-2 border-slate-100 rounded-2xl hover:border-monash hover:bg-blue-50 transition-all font-medium text-slate-700 bg-white";
+                b.className = "w-full text-left p-4 border-2 border-slate-100 rounded-2xl hover:border-monash hover:bg-blue-50 transition-all font-medium text-slate-700 bg-white active:scale-[0.98]";
                 b.innerText = opt.text;
                 b.onclick = () => {
                     if(opt.val === 'B') bCount++;
@@ -178,7 +210,6 @@
             });
         }
 
-        // 随机平局判定函数
         const tieBreaker = (val1, val2, char1, char2) => {
             if (val1 === val2) return Math.random() > 0.5 ? char1 : char2;
             return val1 > val2 ? char1 : char2;
@@ -212,7 +243,6 @@
             document.getElementById('result-image').src = `./assets/${code}.png`;
         }
 
-        // 全图鉴逻辑
         function openArchive() {
             const grid = document.getElementById('archive-grid');
             grid.innerHTML = ''; 
@@ -221,15 +251,7 @@
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100 flex flex-col active:scale-95 transition-transform";
                 card.onclick = () => { showResult(code); closeArchive(); };
-                card.innerHTML = `
-                    <div class="aspect-square bg-slate-50 relative">
-                        <img src="./assets/${code}.png" class="w-full h-full object-cover">
-                        <div class="absolute top-1 left-1 bg-monash/80 text-white text-[8px] px-1 rounded font-bold">${code}</div>
-                    </div>
-                    <div class="p-2">
-                        <p class="font-black text-slate-800 text-[11px] truncate leading-tight">${item.name}</p>
-                    </div>
-                `;
+                card.innerHTML = `<div class="aspect-square bg-slate-50 relative"><img src="./assets/${code}.png" class="w-full h-full object-cover"></div><div class="p-2 text-center"><p class="font-black text-slate-800 text-[10px] truncate leading-tight">${item.name}</p></div>`;
                 grid.appendChild(card);
             });
             document.getElementById('archive-screen').classList.remove('hidden');
@@ -238,6 +260,22 @@
 
         function closeArchive() {
             document.getElementById('archive-screen').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function generateShareImage() {
+            const code = document.getElementById('result-code').innerText;
+            const res = matiDatabase[code];
+            document.getElementById('poster-type').innerText = code;
+            document.getElementById('poster-name').innerText = res.ip + " | " + res.name;
+            document.getElementById('poster-img').src = `./assets/${code}.png`;
+            document.getElementById('poster-motto').innerText = `“${res.motto}”`;
+            document.getElementById('share-overlay').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeShare() {
+            document.getElementById('share-overlay').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
     </script>
