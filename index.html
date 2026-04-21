@@ -3,98 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATI | Monash Alumni/student Type Indicator</title>
+    <title>MATI | Monash Persona Indicator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-monash { background-color: #006DAE; }
         .text-monash { color: #006DAE; }
-        .border-monash { border-color: #006DAE; }
-        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .option-btn:hover { border-color: #006DAE; background-color: #f0f7ff; transform: translateX(5px); }
     </style>
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen font-sans p-4">
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4 font-sans text-slate-800">
 
-    <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full text-center relative overflow-hidden border border-gray-100">
+    <div class="bg-white rounded-[2rem] shadow-2xl max-w-lg w-full overflow-hidden border border-white relative">
         
-        <div id="welcome-screen" class="p-8 md:p-12 fade-in">
-            <div class="w-20 h-20 bg-monash rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
-                <span class="text-white text-3xl font-black">M</span>
-            </div>
-            <h1 class="text-4xl font-black text-gray-900 mb-2">MATI 测试</h1>
-            <p class="text-monash font-bold tracking-widest mb-6">Monash University Persona</p>
-            <div class="bg-blue-50 p-4 rounded-xl mb-8 text-sm text-gray-600 leading-relaxed">
-                基于四大维度：栖息偏好、战斗模式、社交雷达、能量引擎。寻找你在莫纳什宇宙中的真实身份。
-            </div>
-            <button onclick="startTest()" class="bg-monash text-white font-bold text-lg py-4 px-12 rounded-full hover:bg-blue-800 transition shadow-xl transform hover:scale-105 active:scale-95 w-full">
-                开始探索
+        <div id="welcome-screen" class="p-10 text-center fade-in">
+            <h1 class="text-5xl font-black text-slate-900 mb-2">MATI</h1>
+            <p class="text-monash font-bold text-sm tracking-[0.2em] mb-10">莫纳什人格测试</p>
+            <button onclick="startTest()" class="bg-monash text-white font-bold py-5 px-12 rounded-2xl hover:brightness-110 transition-all w-full shadow-lg text-xl">
+                开始测试
             </button>
         </div>
 
-        <div id="question-screen" class="hidden p-6 md:p-10 fade-in">
-            <div class="w-full bg-gray-100 rounded-full h-2 mb-4">
-                <div id="progress-bar" class="bg-monash h-2 rounded-full transition-all duration-500" style="width: 5%"></div>
+        <div id="question-screen" class="hidden p-8 fade-in">
+            <div class="flex justify-between items-end mb-4">
+                <span class="text-monash font-black text-3xl" id="progress-num">01</span>
+                <span class="text-slate-300 font-bold text-xs mb-1">/ 20</span>
             </div>
-            <p id="progress-text" class="text-xs text-gray-400 font-black mb-6 uppercase tracking-widest text-left">Step 01 / 20</p>
-            
-            <h2 id="question-text" class="text-xl md:text-2xl font-extrabold text-gray-800 mb-8 text-left leading-tight h-24 flex items-center">加载中...</h2>
-            
-            <div id="options-container" class="space-y-4"></div>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full mb-10">
+                <div id="progress-bar" class="bg-monash h-full rounded-full transition-all duration-500" style="width: 5%"></div>
+            </div>
+            <h2 id="question-text" class="text-2xl font-bold text-slate-800 mb-8 leading-snug min-h-[5rem]"></h2>
+            <div id="options-container" class="space-y-3"></div>
         </div>
 
         <div id="result-screen" class="hidden fade-in">
-            <div class="bg-monash p-8 text-white">
-                <p class="text-blue-200 text-xs font-bold tracking-widest mb-2">YOUR MATI TYPE IS</p>
-                <h1 id="result-code" class="text-5xl font-black mb-1">CGOF</h1>
-                <p id="result-ip" class="text-lg font-medium opacity-90">IP 角色加载中</p>
+            <div class="bg-monash p-8 text-white text-center">
+                <div id="result-code" class="text-6xl font-black mb-2 italic tracking-tighter">TYPE</div>
+                <div id="result-ip" class="text-xl font-bold opacity-90 border-t border-white/20 pt-2 inline-block"></div>
             </div>
 
-            <div class="p-8">
-                <div class="w-full aspect-square bg-gray-100 rounded-2xl mb-6 flex items-center justify-center border-2 border-dashed border-gray-200">
-                    <p class="text-gray-400 text-sm">IMAGE_PLACEHOLDER<br>(此处放置 AI 生成的角色卡片)</p>
+            <div class="p-6">
+                <div class="rounded-2xl overflow-hidden shadow-inner bg-slate-50 border border-slate-100 mb-6">
+                    <img id="result-image" src="" alt="Persona Card" class="w-full h-auto block">
                 </div>
 
-                <div class="text-left space-y-4">
-                    <div class="border-l-4 border-monash pl-4">
-                        <p class="text-xs text-gray-400 font-bold uppercase">莫纳什箴言</p>
-                        <p id="result-motto" class="text-gray-800 font-bold italic">"..."</p>
+                <div class="space-y-5">
+                    <div class="bg-blue-50/50 p-5 rounded-2xl border-l-4 border-monash">
+                        <p class="text-[10px] text-monash font-black mb-1 tracking-widest uppercase">【莫纳什箴言】</p>
+                        <p id="result-motto" class="text-slate-800 font-bold text-lg leading-tight"></p>
                     </div>
+                    
                     <div>
-                        <p class="text-xs text-gray-400 font-bold uppercase">性格画像</p>
-                        <p id="result-desc" class="text-gray-600 text-sm leading-relaxed">...</p>
+                        <p class="text-[10px] text-slate-400 font-black mb-1 tracking-widest uppercase text-center">【性格画像】</p>
+                        <p id="result-desc" class="text-slate-600 text-sm leading-relaxed text-center px-4"></p>
+                    </div>
+
+                    <div class="space-y-2 pt-2 text-xs">
+                        <div class="flex items-start bg-slate-50 p-2 rounded-lg">
+                            <span class="font-bold text-slate-400 mr-2 shrink-0">🚫 莫纳什克星:</span>
+                            <span id="result-nemesis" class="text-slate-600"></span>
+                        </div>
+                        <div class="flex items-start bg-green-50 p-2 rounded-lg">
+                            <span class="font-bold text-green-600 mr-2 shrink-0">🤝 天选搭子:</span>
+                            <span id="result-partner" class="text-green-800 font-bold"></span>
+                        </div>
+                        <div class="flex items-start bg-red-50 p-2 rounded-lg">
+                            <span class="font-bold text-red-600 mr-2 shrink-0">⚡ 天雷对手:</span>
+                            <span id="result-enemy" class="text-red-800 font-bold"></span>
+                        </div>
                     </div>
                 </div>
 
-                <button onclick="location.reload()" class="mt-10 w-full border-2 border-gray-200 text-gray-500 font-bold py-4 rounded-xl hover:bg-gray-50 transition">
-                    重新测试
+                <button onclick="location.reload()" class="mt-8 w-full py-4 text-slate-300 font-bold text-xs hover:text-monash transition-colors uppercase tracking-widest">
+                    Retake the test
                 </button>
             </div>
         </div>
-
     </div>
 
     <script>
-        // 数据库引入
         const matiDatabase = {
-            "CGOF": { name: "华尔街之狼", ip: "乔丹·贝尔福特", motto: "哪怕每天要在Flinders挤火车，我也要在CBD赢过所有人。", desc: "简历厚过砖，白天Clayton卷GPA，晚上City卷Networking。" },
-            "CGOE": { name: "穿普拉达的女王", ip: "米兰达 (Miranda)", motto: "如果拿不到HD，那一定是因为你穿得太土了。", desc: "精致的代名词。住在City高层，拿最稳的分，喝最贵的Brunch。" },
-            "CGHF": { name: "蝙蝠侠 (Batman)", ip: "布鲁斯·韦恩", motto: "我不是在Matheson，我是在守护我的哥谭。", desc: "住在City百万公寓里独处。夜色是他的保护色，刷题是他的修行。" },
-            "CGHE": { name: "神探夏洛克", ip: "Sherlock Holmes", motto: "平凡的校园生活只会让大脑生锈。", desc: "极高智商，低耗电模式。住在繁华中心但只活在自己的逻辑里。" },
-            "SGOF": { name: "美国队长", ip: "Steve Rogers", motto: "I can do this all day (指的是复习)。", desc: "莫纳什正义化身，Clayton领袖。GPA 4.0且精力无限的六边形战士。" },
-            "SGOE": { name: "芭比 (Barbie)", ip: "Barbie", motto: "在Clayton，每天都是最棒的一天！", desc: "校园社交中心。虽然也努力学习，但更爱和朋友们聚在一起闪耀。" },
-            "SGHF": { name: "灭霸 (Thanos)", ip: "Thanos", motto: "只要响指一响，Assignment就会消失一半。", desc: "极度自律。不需要社交，只需要更快的网速和更安静的图书馆。" },
-            "SGHE": { name: "甘道夫", ip: "Gandalf", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "睿智但慢节奏。深居简出，只在Final期间现身施展魔法。" },
-            "CDOF": { name: "了不起的盖茨比", ip: "Gatsby", motto: "在那盏绿灯熄灭前，我一定能交上我的Essay。", desc: "住在城里，夜夜笙歌。挥霍青春，然后在清晨极限赶Due。" },
-            "CDOE": { name: "杰克船长", ip: "Jack Sparrow", motto: "你们会永远记住这一天，因为你们差一点就挂掉了我的Assignment！", desc: "又菜又爱玩。虽然满身Due债，但总能靠运气和奇葩操作险象环生。" },
-            "CDHF": { name: "钢铁侠 (Iron Man)", ip: "Tony Stark", motto: "我不需要睡觉，我只需要能量棒和红牛。", desc: "天才但熬夜成瘾。靠高科技和毅力在深夜创造神迹，社交电量极低。" },
-            "CDHE": { name: "大雄 (Nobita)", ip: "野比大雄", motto: "多啦A梦，快借我一个写Assignment的道具！", desc: "住在City最贵的房，睡最长的觉。极限摆烂，遇到Due就求救。" },
-            "SDOF": { name: "唐老大 (Dom)", ip: "多米尼克·托雷托", motto: "在Monash，没有什么比Family更重要。", desc: "社交悍匪，带着伙伴在村里探险。考前带全组人极限逆天改命。" },
-            "SDOE": { name: "罗恩·韦斯莱", ip: "Ron Weasley", motto: "为什么总是我？我只是想在东南区安静地吃个鸡腿。", desc: "东南区摆烂天才。虽然能躺平绝不站着，但总能莫名其妙跟着混过考试。" },
-            "SDHF": { name: "绿巨人 (Hulk)", ip: "Bruce Banner", motto: "不要激怒我，否则我会把电脑屏幕拍碎！", desc: "平时沉默寡言。被DDL激怒后瞬间变身爆肝狂魔，横扫所有论文。" },
-            "SDHE": { name: "泰勒·德顿", ip: "Tyler Durden", motto: "关于Monash的第一条规则是：你不能向家人提起你的均分。", desc: "混乱与极限状态的代名词。精神状态领先全球，主打一个疯狂爆肝。" },
-            "ALCH": { name: "绝命酒蒙子", ip: "雷神索尔 (Thor)", motto: "我的血液里80%是Swanston St的酒，剩下20%是Clayton的风。", desc: "全场最嗨彩蛋！作业可以不交，局不能不去，你是莫纳什酒精文化的灵魂。" },
-            "B-B-B-B": { name: "莫纳什水豚", ip: "卡皮巴拉 (Capybara)", motto: "只要我不发疯，Clayton的妖风就吹不到我。", desc: "情绪稳定得令人害怕。你不是在摆烂，你只是达到了留学的最高境界：Inner Peace。" }
+            "CGOF": { name: "华尔街之狼", ip: "乔丹·贝尔福特", motto: "哪怕每天要在Flinders挤火车，我也要在CBD赢过所有人。", desc: "简历厚过砖，白天Clayton卷GPA，晚上City卷Networking。", nemesis: "路人A、图书馆保安", partner: "美国队长", enemy: "大雄" },
+            "CGOE": { name: "穿普拉达的女王", ip: "米兰达 (Miranda)", motto: "如果拿不到HD，那一定是因为你穿得太土了。", desc: "精致的代名词。住在City高层，拿最稳的分，喝最贵的Brunch。", nemesis: "修路噪音", partner: "芭比", enemy: "阿甘" },
+            "CGHF": { name: "蝙蝠侠 (Batman)", ip: "布鲁斯·韦恩", motto: "我不是在Matheson，我是在守护我的哥谭。", desc: "住在City百万公寓里独处。夜色是他的保护色，刷题是他的修行。", nemesis: "Matheson五楼的咳嗽声", partner: "钢铁侠", enemy: "杰克船长" },
+            "CGHE": { name: "神探夏洛克", ip: "Sherlock Holmes", motto: "平凡的校园生活只会让大脑生锈。", desc: "极高智商，低耗电模式。住在繁华中心但只活在自己的逻辑里。", nemesis: "没有逻辑的小组队友", partner: "灭霸", enemy: "罗恩" },
+            "SGOF": { name: "美国队长", ip: "Steve Rogers", motto: "I can do this all day (指的是复习)。", desc: "莫纳什正义化身，Clayton领袖。GPA 4.0且精力无限的六边形战士。", nemesis: "深夜不睡觉的舍友", partner: "华尔街之狼", enemy: "了不起的盖茨比" },
+            "SGOE": { name: "芭比", ip: "Barbie", motto: "在Clayton，每天都是最棒的一天！", desc: "校园社交中心。虽然也努力学习，但更爱和朋友们聚在一起闪耀。", nemesis: "掉妆、8点的早课", partner: "穿普拉达的女王", enemy: "绿巨人" },
+            "SGHF": { name: "灭霸", ip: "Thanos", motto: "只要响指一响，Assignment就会消失一半。", desc: "极度自律。不需要社交，只需要更快的网速和更安静的图书馆。", nemesis: "所有形式的社交聚会", partner: "神探夏洛克", enemy: "杰克船长" },
+            "SGHE": { name: "甘道夫", ip: "Gandalf", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "睿智但慢节奏。深居简出，只在Final期间现身施展魔法。", nemesis: "查重报告 (Turnitin)", partner: "神探夏洛克", enemy: "钢铁侠" },
+            "CDOF": { name: "了不起的盖茨比", ip: "Gatsby", motto: "在那盏绿灯熄灭前，我一定能交上我的Essay。", desc: "住在城里，夜夜笙歌。挥霍青春，然后在清晨极限赶Due。", nemesis: "23:59的闹钟", partner: "杰克船长", enemy: "美国队长" },
+            "CDOE": { name: "杰克船长", ip: "Jack Sparrow", motto: "你们会永远记住这一天，因为你们差一点就挂掉了我的Assignment！", desc: "又菜又爱玩。虽然满身Due债，但总能靠运气和奇葩操作险象环生。", nemesis: "学校停车位、Final", partner: "了不起的盖茨比", enemy: "灭霸" },
+            "CDHF": { name: "钢铁侠 (Iron Man)", ip: "Tony Stark", motto: "我不需要睡觉，我只需要能量棒和红牛。", desc: "天才但熬夜成瘾。靠高科技和毅力在深夜创造神迹，社交电量极低。", nemesis: "低电量警告", partner: "蝙蝠侠", enemy: "甘道夫" },
+            "CDHE": { name: "大雄 (Nobita)", ip: "野比大雄", motto: "多啦A梦，快借我一个写Assignment的道具！", desc: "住在City最贵的房，睡最长的觉。极限摆烂，遇到Due就求救。", nemesis: "所有的考试", partner: "罗恩", enemy: "华尔街之狼" },
+            "SDOF": { name: "家人侠 (Dom)", ip: "Dominic Toretto", motto: "Family！", desc: "“Family”战神，东南区最强局王。", nemesis: "没有外卖的深夜", partner: "芭比", enemy: "灭霸" },
+            "SDOE": { name: "罗恩·韦斯莱", ip: "Ron Weasley", motto: "为什么总是我？我只是想在东南区安静地吃个鸡腿。", desc: "东南区摆烂天才。虽然能躺平绝不站着，但总能莫名其妙跟着混过考试。", nemesis: "蜘蛛、高难度的Lab", partner: "大雄", enemy: "神探夏洛克" },
+            "SDHF": { name: "绿巨人 (Hulk)", ip: "Bruce Banner", motto: "不要激怒我，否则我会把电脑屏幕拍碎！", desc: "平时沉默寡言。被DDL激怒后瞬间变身爆肝狂魔，横扫所有论文。", nemesis: "电脑死机", partner: "钢铁侠", enemy: "芭比" },
+            "SDHE": { name: "阿甘 (Gump)", ip: "Forrest Gump", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "思想单纯，拒绝复杂社交。坐在长椅上等 Pass 的校园持久幸存者。", nemesis: "复杂的Group Work", partner: "莫纳什水豚", enemy: "穿普拉达的女王" },
+            "ALCH": { name: "绝命酒蒙子", ip: "雷神索尔 (Thor)", motto: "我的血液里80%是Swanston St的酒，剩下20%是Clayton的风。", desc: "作业可以不交，局不能不去，你是莫纳什酒精文化的灵魂。", nemesis: "全校Tutor", partner: "杰克船长", enemy: "Early Birds" },
+            "B-B-B-B": { name: "莫纳什水豚", ip: "Capybara", motto: "只要我不发疯，Clayton的妖风就吹不到我。", desc: "情绪稳定得令人害怕。达到留学的最高境界：Inner Peace。", nemesis: "DDL", partner: "阿甘", enemy: "所有人(开玩笑的)" }
         };
 
         const questions = [
@@ -106,7 +112,7 @@
             { q: "6. Moodle 上刚发布了一篇三周后交的 Essay，你的内心 OS 是：", opts: [ {text: "A. 赶紧打开 Word 建好文档排版...", val: "G"}, {text: "B. 先粗略扫一眼，构思一下...", val: "B"}, {text: "C. 三周？那不就是下个世纪的事？", val: "D"} ] },
             { q: "7. 这学期的 Lecture 录像，你通常是怎么处理的？", opts: [ {text: "A. 每周按时看，笔记记得非常全。", val: "G"}, {text: "B. 攒个两三周看一次，倍速播放。", val: "B"}, {text: "C. 考前开启“量子速读”模式。", val: "D"} ] },
             { q: "8. 【 🍺 】小组作业终于开完第一次会了，接下来你会提议？", opts: [ {text: "A. 建立 Google Doc 分配任务进度。", val: "G"}, {text: "B. 今晚先找个地方喝一杯破个冰？", val: "B", isAlc: true}, {text: "C. 发个表情包，等别人先推进。", val: "D"} ] },
-            { q: "9. 期末备考周 (SWOTVAC) 的日常，你属于哪种画风？", opts: [ {text: "A. 驻扎在图书馆的“定海神针”。", val: "G"}, {text: "B. 学一会儿玩一会儿手机的陪伴式复习。", val: "B"}, {text: "C. 开启“女娲补天”模式，48小时学完。", val: "D"} ] },
+            { q: "9. 期末备考周 (SWOTVAC) 的日常，你属于哪种画画？", opts: [ {text: "A. 驻扎在图书馆的“定海神针”。", val: "G"}, {text: "B. 学一会儿玩一会儿手机的陪伴式复习。", val: "B"}, {text: "C. 开启“女娲补天”模式，48小时学完。", val: "D"} ] },
             { q: "10. 当遇到实在解不出的题目或不会写的代码时：", opts: [ {text: "A. 发邮件问 Tutor，不搞懂誓不罢休。", val: "G"}, {text: "B. 问问同学思路，稍微借鉴。", val: "B"}, {text: "C. 使用 ChatGPT 魔法，尽人事听天命。", val: "D"} ] },
             { q: "11. 周五晚上的理想状态是：", opts: [ {text: "A. 各种局走起！剧本杀 KTV。", val: "O"}, {text: "B. 有约就去，没约在家待着也行。", val: "B"}, {text: "C. 宅家洗澡刷剧，太幸福了。", val: "H"} ] },
             { q: "12. 【 🍺 】朋友拉你去参加一个基本不认识的局，你的第一反应：", opts: [ {text: "A. 走啊！又可以认识新朋友了。", val: "O"}, {text: "B. 有酒吗？只要有酒我就去！", val: "B", isAlc: true}, {text: "C. 陌生社交太耗电，不想去。", val: "H"} ] },
@@ -122,8 +128,7 @@
 
         let currentIndex = 0;
         let score = { C:0, S:0, G:0, D:0, O:0, H:0, F:0, E:0 };
-        let bCount = 0;
-        let alcCount = 0;
+        let bCount = 0; let alcCount = 0;
 
         function startTest() {
             document.getElementById('welcome-screen').classList.add('hidden');
@@ -133,21 +138,19 @@
 
         function renderQuestion() {
             const data = questions[currentIndex];
-            document.getElementById('progress-text').innerText = `Step ${String(currentIndex + 1).padStart(2, '0')} / 20`;
+            document.getElementById('progress-num').innerText = String(currentIndex + 1).padStart(2, '0');
             document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / 20) * 100}%`;
             document.getElementById('question-text').innerText = data.q;
-            
             const container = document.getElementById('options-container');
             container.innerHTML = '';
             data.opts.forEach(opt => {
                 const b = document.createElement('button');
-                b.className = "option-btn w-full text-left p-4 md:p-5 border-2 border-gray-100 rounded-2xl transition-all duration-200 font-medium text-gray-700 shadow-sm bg-white";
+                b.className = "w-full text-left p-4 border-2 border-slate-100 rounded-2xl hover:border-monash hover:bg-blue-50 transition-all font-medium text-slate-700 bg-white";
                 b.innerText = opt.text;
                 b.onclick = () => {
                     if(opt.val === 'B') bCount++;
                     if(opt.isAlc) alcCount++;
                     if(opt.val !== 'B') score[opt.val]++;
-                    
                     currentIndex++;
                     if(currentIndex < 20) renderQuestion(); else showResult();
                 };
@@ -159,22 +162,17 @@
             document.getElementById('question-screen').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
             window.scrollTo(0,0);
-
-            let code = "";
-            if (alcCount === 4) code = "ALCH";
-            else if (bCount >= 10) code = "B-B-B-B";
-            else {
-                code += (score.C >= score.S) ? "C" : "S";
-                code += (score.G >= score.D) ? "G" : "D";
-                code += (score.O >= score.H) ? "O" : "H";
-                code += (score.F >= score.E) ? "F" : "E";
-            }
-
+            let code = (alcCount === 4) ? "ALCH" : (bCount >= 10) ? "B-B-B-B" : 
+                       ((score.C>=score.S?'C':'S')+(score.G>=score.D?'G':'D')+(score.O>=score.H?'O':'H')+(score.F>=score.E?'F':'E'));
             const res = matiDatabase[code] || matiDatabase["CGOF"];
             document.getElementById('result-code').innerText = code;
             document.getElementById('result-ip').innerText = `${res.ip} | ${res.name}`;
-            document.getElementById('result-motto').innerText = `"${res.motto}"`;
+            document.getElementById('result-motto').innerText = res.motto;
             document.getElementById('result-desc').innerText = res.desc;
+            document.getElementById('result-nemesis').innerText = res.nemesis;
+            document.getElementById('result-partner').innerText = res.partner;
+            document.getElementById('result-enemy').innerText = res.enemy;
+            document.getElementById('result-image').src = `./assets/${code}.png`;
         }
     </script>
 </body>
