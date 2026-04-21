@@ -3,88 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATI 莫纳什人格测试</title>
+    <title>MATI | Monash Alumni/student Type Indicator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-monash { background-color: #006DAE; }
         .text-monash { color: #006DAE; }
-        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        .border-monash { border-color: #006DAE; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .option-btn:hover { border-color: #006DAE; background-color: #f0f7ff; transform: translateX(5px); }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
+<body class="bg-gray-50 flex items-center justify-center min-h-screen font-sans p-4">
 
-    <div class="bg-white p-6 md:p-10 rounded-2xl shadow-xl max-w-lg w-full text-center relative overflow-hidden">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full text-center relative overflow-hidden border border-gray-100">
         
-        <div id="welcome-screen" class="fade-in">
-            <h1 class="text-4xl font-extrabold text-monash mb-4">MATI 测试</h1>
-            <p class="text-gray-600 mb-8 font-medium">寻找你在莫纳什的究极生存人设</p>
-            <button onclick="startTest()" class="bg-monash text-white font-bold text-lg py-4 px-10 rounded-full hover:bg-blue-800 transition shadow-lg transform hover:scale-105">
-                开始测试
+        <div id="welcome-screen" class="p-8 md:p-12 fade-in">
+            <div class="w-20 h-20 bg-monash rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg">
+                <span class="text-white text-3xl font-black">M</span>
+            </div>
+            <h1 class="text-4xl font-black text-gray-900 mb-2">MATI 测试</h1>
+            <p class="text-monash font-bold tracking-widest mb-6">Monash University Persona</p>
+            <div class="bg-blue-50 p-4 rounded-xl mb-8 text-sm text-gray-600 leading-relaxed">
+                基于四大维度：栖息偏好、战斗模式、社交雷达、能量引擎。寻找你在莫纳什宇宙中的真实身份。
+            </div>
+            <button onclick="startTest()" class="bg-monash text-white font-bold text-lg py-4 px-12 rounded-full hover:bg-blue-800 transition shadow-xl transform hover:scale-105 active:scale-95 w-full">
+                开始探索
             </button>
         </div>
 
-        <div id="question-screen" class="hidden fade-in">
-            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
-                <div id="progress-bar" class="bg-monash h-2.5 rounded-full transition-all duration-300" style="width: 5%"></div>
+        <div id="question-screen" class="hidden p-6 md:p-10 fade-in">
+            <div class="w-full bg-gray-100 rounded-full h-2 mb-4">
+                <div id="progress-bar" class="bg-monash h-2 rounded-full transition-all duration-500" style="width: 5%"></div>
             </div>
-            <p id="progress-text" class="text-sm text-gray-500 mb-6 font-bold">1 / 20</p>
+            <p id="progress-text" class="text-xs text-gray-400 font-black mb-6 uppercase tracking-widest text-left">Step 01 / 20</p>
             
-            <h2 id="question-text" class="text-xl md:text-2xl font-bold text-gray-800 mb-8 text-left leading-relaxed">加载中...</h2>
+            <h2 id="question-text" class="text-xl md:text-2xl font-extrabold text-gray-800 mb-8 text-left leading-tight h-24 flex items-center">加载中...</h2>
             
-            <div id="options-container" class="space-y-4">
-                </div>
+            <div id="options-container" class="space-y-4"></div>
         </div>
 
         <div id="result-screen" class="hidden fade-in">
-            <p class="text-gray-500 font-bold mb-2">你的 MATI 专属代号是</p>
-            <h1 id="result-code" class="text-5xl font-black text-monash mb-4">CGOF</h1>
-            <h2 id="result-title" class="text-2xl font-bold text-gray-800 mb-6">计算中...</h2>
-            
-            <div class="bg-blue-50 p-6 rounded-xl text-left mb-8 border border-blue-100">
-                <p id="result-desc" class="text-gray-700 leading-relaxed">...</p>
+            <div class="bg-monash p-8 text-white">
+                <p class="text-blue-200 text-xs font-bold tracking-widest mb-2">YOUR MATI TYPE IS</p>
+                <h1 id="result-code" class="text-5xl font-black mb-1">CGOF</h1>
+                <p id="result-ip" class="text-lg font-medium opacity-90">IP 角色加载中</p>
             </div>
 
-            <button onclick="location.reload()" class="bg-gray-200 text-gray-800 font-bold py-3 px-8 rounded-full hover:bg-gray-300 transition">
-                重新测试
-            </button>
+            <div class="p-8">
+                <div class="w-full aspect-square bg-gray-100 rounded-2xl mb-6 flex items-center justify-center border-2 border-dashed border-gray-200">
+                    <p class="text-gray-400 text-sm">IMAGE_PLACEHOLDER<br>(此处放置 AI 生成的角色卡片)</p>
+                </div>
+
+                <div class="text-left space-y-4">
+                    <div class="border-l-4 border-monash pl-4">
+                        <p class="text-xs text-gray-400 font-bold uppercase">莫纳什箴言</p>
+                        <p id="result-motto" class="text-gray-800 font-bold italic">"..."</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-bold uppercase">性格画像</p>
+                        <p id="result-desc" class="text-gray-600 text-sm leading-relaxed">...</p>
+                    </div>
+                </div>
+
+                <button onclick="location.reload()" class="mt-10 w-full border-2 border-gray-200 text-gray-500 font-bold py-4 rounded-xl hover:bg-gray-50 transition">
+                    重新测试
+                </button>
+            </div>
         </div>
 
     </div>
 
     <script>
-        // 将你提供的 20 道题转化为 JS 数组格式
+        // 数据库引入
+        const matiDatabase = {
+            "CGOF": { name: "华尔街之狼", ip: "乔丹·贝尔福特", motto: "哪怕每天要在Flinders挤火车，我也要在CBD赢过所有人。", desc: "简历厚过砖，白天Clayton卷GPA，晚上City卷Networking。" },
+            "CGOE": { name: "穿普拉达的女王", ip: "米兰达 (Miranda)", motto: "如果拿不到HD，那一定是因为你穿得太土了。", desc: "精致的代名词。住在City高层，拿最稳的分，喝最贵的Brunch。" },
+            "CGHF": { name: "蝙蝠侠 (Batman)", ip: "布鲁斯·韦恩", motto: "我不是在Matheson，我是在守护我的哥谭。", desc: "住在City百万公寓里独处。夜色是他的保护色，刷题是他的修行。" },
+            "CGHE": { name: "神探夏洛克", ip: "Sherlock Holmes", motto: "平凡的校园生活只会让大脑生锈。", desc: "极高智商，低耗电模式。住在繁华中心但只活在自己的逻辑里。" },
+            "SGOF": { name: "美国队长", ip: "Steve Rogers", motto: "I can do this all day (指的是复习)。", desc: "莫纳什正义化身，Clayton领袖。GPA 4.0且精力无限的六边形战士。" },
+            "SGOE": { name: "芭比 (Barbie)", ip: "Barbie", motto: "在Clayton，每天都是最棒的一天！", desc: "校园社交中心。虽然也努力学习，但更爱和朋友们聚在一起闪耀。" },
+            "SGHF": { name: "灭霸 (Thanos)", ip: "Thanos", motto: "只要响指一响，Assignment就会消失一半。", desc: "极度自律。不需要社交，只需要更快的网速和更安静的图书馆。" },
+            "SGHE": { name: "甘道夫", ip: "Gandalf", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "睿智但慢节奏。深居简出，只在Final期间现身施展魔法。" },
+            "CDOF": { name: "了不起的盖茨比", ip: "Gatsby", motto: "在那盏绿灯熄灭前，我一定能交上我的Essay。", desc: "住在城里，夜夜笙歌。挥霍青春，然后在清晨极限赶Due。" },
+            "CDOE": { name: "杰克船长", ip: "Jack Sparrow", motto: "你们会永远记住这一天，因为你们差一点就挂掉了我的Assignment！", desc: "又菜又爱玩。虽然满身Due债，但总能靠运气和奇葩操作险象环生。" },
+            "CDHF": { name: "钢铁侠 (Iron Man)", ip: "Tony Stark", motto: "我不需要睡觉，我只需要能量棒和红牛。", desc: "天才但熬夜成瘾。靠高科技和毅力在深夜创造神迹，社交电量极低。" },
+            "CDHE": { name: "大雄 (Nobita)", ip: "野比大雄", motto: "多啦A梦，快借我一个写Assignment的道具！", desc: "住在City最贵的房，睡最长的觉。极限摆烂，遇到Due就求救。" },
+            "SDOF": { name: "唐老大 (Dom)", ip: "多米尼克·托雷托", motto: "在Monash，没有什么比Family更重要。", desc: "社交悍匪，带着伙伴在村里探险。考前带全组人极限逆天改命。" },
+            "SDOE": { name: "罗恩·韦斯莱", ip: "Ron Weasley", motto: "为什么总是我？我只是想在东南区安静地吃个鸡腿。", desc: "东南区摆烂天才。虽然能躺平绝不站着，但总能莫名其妙跟着混过考试。" },
+            "SDHF": { name: "绿巨人 (Hulk)", ip: "Bruce Banner", motto: "不要激怒我，否则我会把电脑屏幕拍碎！", desc: "平时沉默寡言。被DDL激怒后瞬间变身爆肝狂魔，横扫所有论文。" },
+            "SDHE": { name: "泰勒·德顿", ip: "Tyler Durden", motto: "关于Monash的第一条规则是：你不能向家人提起你的均分。", desc: "混乱与极限状态的代名词。精神状态领先全球，主打一个疯狂爆肝。" },
+            "ALCH": { name: "绝命酒蒙子", ip: "雷神索尔 (Thor)", motto: "我的血液里80%是Swanston St的酒，剩下20%是Clayton的风。", desc: "全场最嗨彩蛋！作业可以不交，局不能不去，你是莫纳什酒精文化的灵魂。" },
+            "B-B-B-B": { name: "莫纳什水豚", ip: "卡皮巴拉 (Capybara)", motto: "只要我不发疯，Clayton的妖风就吹不到我。", desc: "情绪稳定得令人害怕。你不是在摆烂，你只是达到了留学的最高境界：Inner Peace。" }
+        };
+
         const questions = [
-            // 维度一：C vs S
-            { q: "1. 马上要签下学期的房子了，你的租房首选地段是？", opts: [ {text: "A. 必须 City！下楼就是维妈、唐人街...", val: "C"}, {text: "B. 选个折中点吧，比如 Carnegie 或者 Caufield 沿线...", val: "B"}, {text: "C. 绝对是 Clayton/Caulfield 步行区。村里安静安逸...", val: "S"} ] },
-            { q: "2. 周末中午饿醒了，打开手机想解决午饭，你会选择？", opts: [ {text: "A. 精心打扮一番，坐火车进城去吃网红 Brunch...", val: "C"}, {text: "B. 去附近的 Chadstone 或 M-City 吃一顿...", val: "B"}, {text: "C. 穿着睡衣下楼去亚超买点速冻饺子，或者直接外卖...", val: "S"} ] },
-            { q: "3. 刚交完一个极其痛苦的、占总分 40% 的 Assignment，你决定如何犒劳自己？", opts: [ {text: "A. 进城吃顿平时舍不得吃的米其林或高档日料大餐！", val: "C"}, {text: "B. 直接冲向 The Nott 或者常去的酒吧，先干三大杯再说！", val: "B", isAlcohol: true}, {text: "C. 谁也别烦我，我要把手机静音，睡个天昏地暗。", val: "S"} ] },
-            { q: "4. 没课的下午，你最常出没的地点是？", opts: [ {text: "A. City 的各大巷子和咖啡馆，喜欢有氛围感的地方。", val: "C"}, {text: "B. 学校的 Campus Centre 或者周边咖啡店...", val: "B"}, {text: "C. 只要没课就立刻闪现回宿舍/家里...", val: "S"} ] },
-            { q: "5. 朋友约你周末聚一聚，你最希望定在哪？", opts: [ {text: "A. 当然是 City！吃完饭还能去打个卡、唱个歌。", val: "C"}, {text: "B. 看大家住哪，找个在大家通勤路线中间的地方。", val: "B"}, {text: "C. “要不你们买点菜来我家做饭吧？”（别让我出村）", val: "S"} ] },
-            // 维度二：G vs D
-            { q: "6. Moodle 上刚发布了一篇三周后交的 Essay，你的内心 OS 是：", opts: [ {text: "A. 赶紧打开 Word 建好文档排好版...", val: "G"}, {text: "B. 先粗略扫一眼题目要求，在脑子里构思一下...", val: "B"}, {text: "C. 三周？火速关掉界面，DDL 前三天再体会心跳的快感。", val: "D"} ] },
-            { q: "7. 这学期的 Lecture 录像，你通常是怎么处理的？", opts: [ {text: "A. 每周按时看，原速播放，笔记记得像一本教科书。", val: "G"}, {text: "B. 攒个两三周看一次，用 1.25 或 1.5 倍速过重点。", val: "B"}, {text: "C. 考前直接看学霸总结的笔记或者开 2 倍速量子速读。", val: "D"} ] },
-            { q: "8. 小组作业终于开完第一次会了，接下来你会提议？", opts: [ {text: "A. 建立 Google Doc，立刻分配好任务和时间表。", val: "G"}, {text: "B. “相聚就是缘，要不今晚先去找个地方喝一杯破个冰？”", val: "B", isAlcohol: true}, {text: "C. 建个微信群发个表情包打哈哈，然后各回各家...", val: "D"} ] },
-            { q: "9. 期末 SWOTVAC (备考周) 的日常，你属于哪种画风？", opts: [ {text: "A. 驻扎在图书馆的“定海神针”，每天按计划复习。", val: "G"}, {text: "B. 跟着大部队去图书馆，学一会儿玩一会儿手机...", val: "B"}, {text: "C. 开启“女娲补天”模式，试图在 48 小时内学完一学期的课。", val: "D"} ] },
-            { q: "10. 当遇到实在解不出的题目或不会写的代码时：", opts: [ {text: "A. 查阅各种 Reference，发邮件问 Tutor，不搞懂誓不罢休。", val: "G"}, {text: "B. 问问身边的同学有没有思路，稍微借鉴一下。", val: "B"}, {text: "C. 使用 ChatGPT 魔法，或者直接玄学作答，尽人事听天命。", val: "D"} ] },
-            // 维度三：O vs H
-            { q: "11. 周五晚上的理想状态是：", opts: [ {text: "A. 各种局走起！剧本杀、KTV、狼人杀，燥起来。", val: "O"}, {text: "B. 看有没有好朋友约我，有局就去，没局在家也行。", val: "B"}, {text: "C. 终于可以回家洗个澡躺床上打开 Netflix/B站了...", val: "H"} ] },
-            { q: "12. 朋友突然拉你去参加一个你基本都不认识的局，你的第一反应是：", opts: [ {text: "A. “走啊！又可以认识新朋友了，顺便拓宽一下圈子。”", val: "O"}, {text: "B. “有酒吗？喝什么局？只要有酒我就去！”", val: "B", isAlcohol: true}, {text: "C. “啊…我有点事/有点累了。” 陌生人社交太耗电。", val: "H"} ] },
-            { q: "13. 新学期 O-Week 逛社团招新摊位：", opts: [ {text: "A. 兴致勃勃到处逛，加了十几个新生群，主动搭话。", val: "O"}, {text: "B. 跟着熟悉的同学走走看看，遇到感兴趣的才问。", val: "B"}, {text: "C. 戴着耳机快速穿过人群，拿了免费笔就匆匆撤退...", val: "H"} ] },
-            { q: "14. 在校园里偶遇只见过一次面的同学：", opts: [ {text: "A. 主动热情地挥手大喊名字，凑上去聊两句。", val: "O"}, {text: "B. 眼神对上了就微笑点头致意，不特意停下来寒暄。", val: "B"}, {text: "C. 默默低下头假装看手机，迅速加快脚步走开...", val: "H"} ] },
-            { q: "15. 你的微信/聊天软件回复状态通常是：", opts: [ {text: "A. 永远在秒回，各种群聊都有我的身影，消息爆炸。", val: "O"}, {text: "B. 正常速度回复，工作/学习群稍微晚点看。", val: "B"}, {text: "C. 轮回。有时候在心里回过了，就以为自己真的回了。", val: "H"} ] },
-            // 维度四：F vs E
-            { q: "16. 经历了一整天高强度的早八+满课，你晚上的状态是：", opts: [ {text: "A. 满血复活！还能去撸个铁，或者跟朋友去打球。", val: "F"}, {text: "B. 感觉有点虚脱，吃顿好吃的勉强能恢复一半体力。", val: "B"}, {text: "C. 物理和精神双重宕机。已开启“极限省电模式”...", val: "E"} ] },
-            { q: "17. 放小长假（比如 Mid-sem break）的计划安排：", opts: [ {text: "A. 完美的“特种兵”行程。自驾游，步数两万起...", val: "F"}, {text: "B. 找个风景好、离家不远的地方随便逛逛，主打休闲。", val: "B"}, {text: "C. “换个地方睡觉”或者直接“家里躺”，静静发呆。", val: "E"} ] },
-            { q: "18. 经历了一连串的打击（挂科边缘、被开罚单），你回血的方式是：", opts: [ {text: "A. 去操场狂跑五公里出汗，或者拉着朋友疯狂吐槽...", val: "F"}, {text: "B. 默默去提一打酒，今晚用酒精冲刷所有的悲伤。", val: "B", isAlcohol: true}, {text: "C. 点一顿极其罪恶的垃圾食品外卖，然后狠狠睡上 12 小时。", val: "E"} ] },
-            { q: "19. 参加一节长达 2 小时、内容极其枯燥的 Seminar：", opts: [ {text: "A. 依然能保持专注，随时准备举手回答问题或互动。", val: "F"}, {text: "B. 前 45 分钟清醒，中间去上个厕所，后半段神游。", val: "B"}, {text: "C. 选个后排靠角落的绝佳位置，双眼放空，灵魂出窍。", val: "E"} ] },
-            { q: "20. 每天早上的起床困难指数：", opts: [ {text: "A. 闹钟一响立刻弹射起步，甚至能在课前化个全妆。", val: "F"}, {text: "B. 需要按两次 Snooze 才能勉强爬起来，但基本不迟到。", val: "B"}, {text: "C. 起床全靠今天有没有必须交的 Due，否则睡到地老天荒。", val: "E"} ] }
+            { q: "1. 马上要签下学期的房子了，你的租房首选地段是？", opts: [ {text: "A. 必须 City！下楼就是维妈、唐人街...", val: "C"}, {text: "B. 选个折中点吧，比如 Carnegie 或者 Caufield...", val: "B"}, {text: "C. 绝对是 Clayton/Caulfield 步行区...", val: "S"} ] },
+            { q: "2. 周末中午饿醒了，打开手机想解决午饭，你会选择？", opts: [ {text: "A. 坐火车进城去吃网红 Brunch...", val: "C"}, {text: "B. 去附近的 Chadstone 或 M-City 吃一顿...", val: "B"}, {text: "C. 穿着睡衣下楼去亚超买点速冻饺子...", val: "S"} ] },
+            { q: "3. 【 🍺 】刚交完一个极其痛苦的 Assignment，你决定如何犒劳自己？", opts: [ {text: "A. 进城吃顿平时舍不得吃的米其林...", val: "C"}, {text: "B. 直接冲向 The Nott 先干三大杯！", val: "B", isAlc: true}, {text: "C. 谁也别烦我，睡个天昏地暗。", val: "S"} ] },
+            { q: "4. 没课的下午，你最常出没的地点是？", opts: [ {text: "A. City 的各大巷子和咖啡馆...", val: "C"}, {text: "B. 学校的 Campus Centre 周边...", val: "B"}, {text: "C. 只要没课就立刻闪现回宿舍...", val: "S"} ] },
+            { q: "5. 朋友约你周末聚一聚，你最希望定在哪？", opts: [ {text: "A. 当然是 City！唱个歌打个卡。", val: "C"}, {text: "B. 找个在大家通勤路线中间的地方。", val: "B"}, {text: "C. 要不你们买点菜来我家做饭吧？", val: "S"} ] },
+            { q: "6. Moodle 上刚发布了一篇三周后交的 Essay，你的内心 OS 是：", opts: [ {text: "A. 赶紧打开 Word 建好文档排版...", val: "G"}, {text: "B. 先粗略扫一眼，构思一下...", val: "B"}, {text: "C. 三周？那不就是下个世纪的事？", val: "D"} ] },
+            { q: "7. 这学期的 Lecture 录像，你通常是怎么处理的？", opts: [ {text: "A. 每周按时看，笔记记得非常全。", val: "G"}, {text: "B. 攒个两三周看一次，倍速播放。", val: "B"}, {text: "C. 考前开启“量子速读”模式。", val: "D"} ] },
+            { q: "8. 【 🍺 】小组作业终于开完第一次会了，接下来你会提议？", opts: [ {text: "A. 建立 Google Doc 分配任务进度。", val: "G"}, {text: "B. 今晚先找个地方喝一杯破个冰？", val: "B", isAlc: true}, {text: "C. 发个表情包，等别人先推进。", val: "D"} ] },
+            { q: "9. 期末备考周 (SWOTVAC) 的日常，你属于哪种画风？", opts: [ {text: "A. 驻扎在图书馆的“定海神针”。", val: "G"}, {text: "B. 学一会儿玩一会儿手机的陪伴式复习。", val: "B"}, {text: "C. 开启“女娲补天”模式，48小时学完。", val: "D"} ] },
+            { q: "10. 当遇到实在解不出的题目或不会写的代码时：", opts: [ {text: "A. 发邮件问 Tutor，不搞懂誓不罢休。", val: "G"}, {text: "B. 问问同学思路，稍微借鉴。", val: "B"}, {text: "C. 使用 ChatGPT 魔法，尽人事听天命。", val: "D"} ] },
+            { q: "11. 周五晚上的理想状态是：", opts: [ {text: "A. 各种局走起！剧本杀 KTV。", val: "O"}, {text: "B. 有约就去，没约在家待着也行。", val: "B"}, {text: "C. 宅家洗澡刷剧，太幸福了。", val: "H"} ] },
+            { q: "12. 【 🍺 】朋友拉你去参加一个基本不认识的局，你的第一反应：", opts: [ {text: "A. 走啊！又可以认识新朋友了。", val: "O"}, {text: "B. 有酒吗？只要有酒我就去！", val: "B", isAlc: true}, {text: "C. 陌生社交太耗电，不想去。", val: "H"} ] },
+            { q: "13. 新学期 O-Week 逛社团招新摊位：", opts: [ {text: "A. 扫码加十几个群，主动勾搭学长。", val: "O"}, {text: "B. 就跟熟悉的同学走走看看。", val: "B"}, {text: "C. 拿了免费笔和袋子就匆匆撤退。", val: "H"} ] },
+            { q: "14. 在校园里偶遇只见过一次面的同学：", opts: [ {text: "A. 主动大喊名字热聊两句。", val: "O"}, {text: "B. 眼神对上了就点头致意。", val: "B"}, {text: "C. 低头假装看手机迅速走开。", val: "H"} ] },
+            { q: "15. 你的微信回复状态通常是：", opts: [ {text: "A. 秒回狂人，活跃在各个群聊。", val: "O"}, {text: "B. 正常速度，工作群稍微晚点。", val: "B"}, {text: "C. 轮回，用意念回复过就算回了。", val: "H"} ] },
+            { q: "16. 经历了一天高强度满课，你晚上的状态是：", opts: [ {text: "A. 满血复活去撸铁打球。", val: "F"}, {text: "B. 虚脱，吃顿好的能回一半血。", val: "B"}, {text: "C. 物理宕机，开启极限省电模式。", val: "E"} ] },
+            { q: "17. 放小长假的计划安排：", opts: [ {text: "A. 特种兵行程，步数两万起。", val: "F"}, {text: "B. 随便逛逛，主打休闲。", val: "B"}, {text: "C. 换个地方睡觉，静静发呆。", val: "E"} ] },
+            { q: "18. 【 🍺 】经历了一连串打击，你回血的方式是：", opts: [ {text: "A. 跑五公里或者疯狂吐槽排空。", val: "F"}, {text: "B. 提一打酒，用酒精冲刷悲伤。", val: "B", isAlc: true}, {text: "C. 点顿罪恶外卖，睡 12 小时。", val: "E"} ] },
+            { q: "19. 参加一节长达 2 小时枯燥的 Seminar：", opts: [ {text: "A. 保持专注，积极互动。", val: "F"}, {text: "B. 前段清醒，后半段神游。", val: "B"}, {text: "C. 选后排角落，灵魂出窍。", val: "E"} ] },
+            { q: "20. 每天早上的起床困难指数：", opts: [ {text: "A. 弹射起步，还能化个全妆。", val: "F"}, {text: "B. 按两次闹钟，基本不迟到。", val: "B"}, {text: "C. 全靠 Due 续命，否则地老天荒。", val: "E"} ] }
         ];
 
         let currentIndex = 0;
-        let scores = { C:0, S:0, G:0, D:0, O:0, H:0, F:0, E:0 };
+        let score = { C:0, S:0, G:0, D:0, O:0, H:0, F:0, E:0 };
         let bCount = 0;
-        let alcoholCount = 0;
+        let alcCount = 0;
 
         function startTest() {
             document.getElementById('welcome-screen').classList.add('hidden');
@@ -93,86 +132,49 @@
         }
 
         function renderQuestion() {
-            const qData = questions[currentIndex];
-            document.getElementById('progress-text').innerText = `${currentIndex + 1} / 20`;
+            const data = questions[currentIndex];
+            document.getElementById('progress-text').innerText = `Step ${String(currentIndex + 1).padStart(2, '0')} / 20`;
             document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / 20) * 100}%`;
-            document.getElementById('question-text').innerText = qData.q;
+            document.getElementById('question-text').innerText = data.q;
             
-            const optsContainer = document.getElementById('options-container');
-            optsContainer.innerHTML = '';
-            
-            // 重新添加 fade-in 动画效果
-            optsContainer.classList.remove('fade-in');
-            void optsContainer.offsetWidth; // 触发重绘
-            optsContainer.classList.add('fade-in');
-
-            qData.opts.forEach((opt) => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-left p-4 md:p-5 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition font-medium text-gray-700 shadow-sm";
-                btn.innerText = opt.text;
-                btn.onclick = () => handleAnswer(opt.val, opt.isAlcohol);
-                optsContainer.appendChild(btn);
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            data.opts.forEach(opt => {
+                const b = document.createElement('button');
+                b.className = "option-btn w-full text-left p-4 md:p-5 border-2 border-gray-100 rounded-2xl transition-all duration-200 font-medium text-gray-700 shadow-sm bg-white";
+                b.innerText = opt.text;
+                b.onclick = () => {
+                    if(opt.val === 'B') bCount++;
+                    if(opt.isAlc) alcCount++;
+                    if(opt.val !== 'B') score[opt.val]++;
+                    
+                    currentIndex++;
+                    if(currentIndex < 20) renderQuestion(); else showResult();
+                };
+                container.appendChild(b);
             });
-        }
-
-        function handleAnswer(val, isAlcohol) {
-            // 记录分数
-            if (val === 'B') {
-                bCount++;
-                if (isAlcohol) alcoholCount++;
-            } else {
-                scores[val]++;
-            }
-
-            // 下一题或结算
-            currentIndex++;
-            if (currentIndex < questions.length) {
-                renderQuestion();
-            } else {
-                showResult();
-            }
         }
 
         function showResult() {
             document.getElementById('question-screen').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
+            window.scrollTo(0,0);
 
-            let finalCode = "";
-            let resultName = "";
-            let resultDesc = "";
-
-            // 彩蛋逻辑拦截
-            if (alcoholCount === 4 && bCount <= 8) {
-                finalCode = "ALCH";
-                resultName = "绝命酒蒙子 (雷神)";
-                resultDesc = "你的血液里 80% 是 Swanston St 的酒，剩下 20% 是 Clayton 的风。作业可以不交，局不能不去！";
-            } else if (bCount >= 10) {
-                finalCode = "B-B-B-B";
-                resultName = "莫纳什水豚 (Capybara)";
-                resultDesc = "终极端水大师。情绪稳定得令人害怕。你不是在摆烂，你只是达到了留学的最高境界：Inner Peace。";
-            } else {
-                // 常规计分逻辑：比较每组对立维度的分数
-                finalCode += (scores.C >= scores.S) ? "C" : "S";
-                finalCode += (scores.G >= scores.D) ? "G" : "D";
-                finalCode += (scores.O >= scores.H) ? "O" : "H";
-                finalCode += (scores.F >= scores.E) ? "F" : "E";
-
-                // 这里为了演示，我们放两个极端的示例数据，后续再接上完整的 16 人格数据库
-                if (finalCode === "CGOF") {
-                    resultName = "华尔街之狼";
-                    resultDesc = "满级人类精英。简历完美，白天在 Clayton 卷学术，晚上回 City 喝香槟，精力无限的职场预备役。";
-                } else if (finalCode === "SDHE") {
-                    resultName = "东南区阿甘";
-                    resultDesc = "极限摆烂，终极节电。住在村里深居简出，作业永远拖到最后一秒，主打一个随缘 Pass。";
-                } else {
-                    resultName = "你测出了专属组合！";
-                    resultDesc = "快去截图分享你的隐藏属性吧！（正式上线时这里会显示完整的角色文案）";
-                }
+            let code = "";
+            if (alcCount === 4) code = "ALCH";
+            else if (bCount >= 10) code = "B-B-B-B";
+            else {
+                code += (score.C >= score.S) ? "C" : "S";
+                code += (score.G >= score.D) ? "G" : "D";
+                code += (score.O >= score.H) ? "O" : "H";
+                code += (score.F >= score.E) ? "F" : "E";
             }
 
-            document.getElementById('result-code').innerText = finalCode;
-            document.getElementById('result-title').innerText = resultName;
-            document.getElementById('result-desc').innerText = resultDesc;
+            const res = matiDatabase[code] || matiDatabase["CGOF"];
+            document.getElementById('result-code').innerText = code;
+            document.getElementById('result-ip').innerText = `${res.ip} | ${res.name}`;
+            document.getElementById('result-motto').innerText = `"${res.motto}"`;
+            document.getElementById('result-desc').innerText = res.desc;
         }
     </script>
 </body>
