@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATI 莫纳什人格测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 莫纳什蓝主题色 */
+        .bg-monash { background-color: #006DAE; }
+        .text-monash { color: #006DAE; }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
+
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center">
+        
+        <div id="welcome-screen">
+            <h1 class="text-3xl font-bold text-monash mb-4">MATI 莫纳什测试</h1>
+            <p class="text-gray-600 mb-8">测测你是哪种莫纳什主角？</p>
+            <button onclick="startTest()" class="bg-monash text-white font-bold py-3 px-8 rounded-full hover:bg-blue-800 transition">
+                开始测试
+            </button>
+        </div>
+
+        <div id="question-screen" class="hidden">
+            <p class="text-sm text-gray-400 mb-2">第 1/1 题</p>
+            <h2 class="text-xl font-bold text-gray-800 mb-6">周末中午饿醒了，你会去哪吃饭？</h2>
+            
+            <div class="space-y-4">
+                <button onclick="answerQuestion('city')" class="w-full text-left p-4 border border-gray-300 rounded-lg hover:border-[#006DAE] hover:bg-blue-50 transition">
+                    A. 坐火车进城去吃网红 Brunch
+                </button>
+                <button onclick="answerQuestion('suburb')" class="w-full text-left p-4 border border-gray-300 rounded-lg hover:border-[#006DAE] hover:bg-blue-50 transition">
+                    B. 穿着睡衣去楼下亚超买速冻饺子
+                </button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <h2 class="text-2xl font-bold text-monash mb-4">你的测试结果是：</h2>
+            <h1 id="result-title" class="text-4xl font-extrabold text-gray-900 mb-2">计算中...</h1>
+            <p id="result-desc" class="text-gray-600 mb-8">...</p>
+            <button onclick="location.reload()" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-full hover:bg-gray-300 transition">
+                再测一次
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        function startTest() {
+            // 隐藏欢迎页，显示答题页
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('question-screen').classList.remove('hidden');
+        }
+
+        function answerQuestion(choice) {
+            // 隐藏答题页，显示结果页
+            document.getElementById('question-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            // 极简判断逻辑：选了什么就出什么结果
+            let title = "";
+            let desc = "";
+
+            if (choice === 'city') {
+                title = "华尔街之狼";
+                desc = "你向往都市繁华，哪怕每天要在 Flinders 挤火车，也要捍卫都市丽人的尊严！";
+            } else {
+                title = "莫纳什水豚";
+                desc = "你喜欢 Clayton 的安逸，拒绝内耗，步行上学，东南区就是你的快乐老家。";
+            }
+
+            // 把结果填入页面
+            document.getElementById('result-title').innerText = title;
+            document.getElementById('result-desc').innerText = desc;
+        }
+    </script>
+</body>
+</html>
