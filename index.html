@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATI | Monash Persona Indicator</title>
+    <title>MATI 2.0 | Monash Persona Indicator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-monash { background-color: #006DAE; }
@@ -18,16 +18,17 @@
 
     <div class="bg-white rounded-[2rem] shadow-2xl max-w-lg w-full overflow-hidden border border-white relative">
         
+        <div class="absolute top-4 right-6 text-[10px] font-black text-slate-300 uppercase tracking-widest z-10">Ver 2.0 Professional</div>
+
         <div id="welcome-screen" class="p-10 text-center fade-in">
-            <h1 class="text-5xl font-black text-slate-900 mb-2 italic">MATI</h1>
-            <p class="text-monash font-bold text-sm tracking-[0.2em] mb-10">莫纳什人格测试</p>
-            <div class="mb-10 text-slate-400 text-xs leading-relaxed space-y-1">
-                <p>本测试仅供图一乐，如有不完全符合的可以选择最接近的情景</p>
-                <p>基于四大维度分析：</p>
+            <h1 class="text-5xl font-black text-slate-900 mb-2 italic tracking-tighter">MATI</h1>
+            <p class="text-monash font-bold text-sm tracking-[0.2em] mb-10">莫纳什人格测试 2.0</p>
+            <div class="mb-10 text-slate-400 text-[10px] leading-relaxed uppercase tracking-tight space-y-1 bg-slate-50 py-4 rounded-xl">
                 <p>栖息偏好 / 战斗模式 / 社交雷达 / 能量引擎</p>
+                <p class="pt-1 text-slate-300 font-medium">由专业逻辑与莫纳什梗引擎驱动</p>
             </div>
             <button onclick="startTest()" class="bg-monash text-white font-bold py-5 px-12 rounded-2xl hover:brightness-110 transition-all w-full shadow-lg text-xl active:scale-95">
-                开始测试
+                开始深度测评
             </button>
         </div>
 
@@ -39,7 +40,7 @@
             <div class="w-full bg-slate-100 h-1.5 rounded-full mb-10">
                 <div id="progress-bar" class="bg-monash h-full rounded-full transition-all duration-500" style="width: 5%"></div>
             </div>
-            <h2 id="question-text" class="text-2xl font-bold text-slate-800 mb-8 leading-snug min-h-[5rem]"></h2>
+            <h2 id="question-text" class="text-xl font-bold text-slate-800 mb-8 leading-snug min-h-[5rem]"></h2>
             <div id="options-container" class="space-y-3"></div>
         </div>
 
@@ -48,49 +49,29 @@
                 <div id="result-code" class="text-6xl font-black mb-2 italic tracking-tighter">TYPE</div>
                 <div id="result-ip" class="text-xl font-bold opacity-90 border-t border-white/20 pt-2 inline-block"></div>
             </div>
-
             <div class="p-6">
                 <div class="rounded-2xl overflow-hidden shadow-inner bg-slate-50 border border-slate-100 mb-6">
                     <img id="result-image" src="" alt="Persona Card" class="w-full h-auto block">
                 </div>
-
                 <div class="space-y-5">
                     <div class="bg-blue-50/50 p-5 rounded-2xl border-l-4 border-monash">
                         <p class="text-[10px] text-monash font-black mb-1 tracking-widest uppercase">【莫纳什箴言】</p>
                         <p id="result-motto" class="text-slate-800 font-bold text-lg leading-tight"></p>
                     </div>
-                    
                     <div>
                         <p class="text-[10px] text-slate-400 font-black mb-1 tracking-widest uppercase text-center">【性格画像】</p>
                         <p id="result-desc" class="text-slate-600 text-sm leading-relaxed text-center px-4"></p>
                     </div>
-
                     <div class="space-y-2 pt-2 text-xs">
-                        <div class="flex items-start bg-slate-50 p-2 rounded-lg text-slate-600">
-                            <span class="font-bold text-slate-400 mr-2 shrink-0">🚫 莫纳什克星:</span>
-                            <span id="result-nemesis"></span>
-                        </div>
-                        <div class="flex items-start bg-green-50 p-2 rounded-lg text-green-800">
-                            <span class="font-bold text-green-600 mr-2 shrink-0">🤝 天选搭子:</span>
-                            <span id="result-partner" class="font-bold"></span>
-                        </div>
-                        <div class="flex items-start bg-red-50 p-2 rounded-lg text-red-800">
-                            <span class="font-bold text-red-600 mr-2 shrink-0">⚡ 天雷对手:</span>
-                            <span id="result-enemy" class="font-bold"></span>
-                        </div>
+                        <div class="flex items-start bg-slate-50 p-2 rounded-lg text-slate-600"><span class="font-bold text-slate-400 mr-2">🚫 克星:</span><span id="result-nemesis"></span></div>
+                        <div class="flex items-start bg-green-50 p-2 rounded-lg text-green-800"><span class="font-bold text-green-600 mr-2">🤝 搭子:</span><span id="result-partner" class="font-bold"></span></div>
+                        <div class="flex items-start bg-red-50 p-2 rounded-lg text-red-800"><span class="font-bold text-red-600 mr-2">⚡ 对手:</span><span id="result-enemy" class="font-bold"></span></div>
                     </div>
                 </div>
-
                 <div class="mt-8 space-y-3">
-                    <button onclick="generateShareImage()" class="w-full py-4 bg-green-600 text-white font-bold rounded-2xl shadow-lg hover:bg-green-700 transition-all text-sm flex items-center justify-center active:scale-95">
-                        📸 生成分享海报 (截屏保存)
-                    </button>
-                    <button onclick="openArchive()" class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-lg hover:bg-slate-800 transition-all text-sm active:scale-95">
-                        📂 查看全图鉴 (Archive)
-                    </button>
-                    <button onclick="location.reload()" class="w-full py-4 text-slate-300 font-bold text-xs hover:text-monash transition-colors uppercase tracking-widest">
-                        Retake the test
-                    </button>
+                    <button onclick="generateShareImage()" class="w-full py-4 bg-green-600 text-white font-bold rounded-2xl shadow-lg text-sm flex items-center justify-center active:scale-95">📸 生成 2.0 版认证海报</button>
+                    <button onclick="openArchive()" class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-lg text-sm active:scale-95">📂 莫纳什人格档案</button>
+                    <button onclick="location.reload()" class="w-full py-4 text-slate-300 font-bold text-xs uppercase tracking-widest">Retake the test</button>
                 </div>
             </div>
         </div>
@@ -98,7 +79,7 @@
         <div id="archive-screen" class="hidden fixed inset-0 bg-white z-50 overflow-y-auto p-4 animate-[fadeIn_0.3s_ease-out]">
             <div class="max-w-lg mx-auto">
                 <div class="flex justify-between items-center mb-6 pt-4 px-2">
-                    <h2 class="text-2xl font-black italic text-monash underline decoration-4 underline-offset-4 tracking-tighter">MATI ARCHIVE</h2>
+                    <h2 class="text-2xl font-black italic text-monash tracking-tighter">MATI 2.0 ARCHIVE</h2>
                     <button onclick="closeArchive()" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 font-bold text-xl">&times;</button>
                 </div>
                 <div id="archive-grid" class="grid grid-cols-2 gap-4 pb-10"></div>
@@ -110,19 +91,19 @@
                 <button onclick="closeShare()" class="absolute -top-12 right-0 text-white text-3xl">&times;</button>
                 <div id="poster-area" class="bg-white rounded-[2rem] overflow-hidden shadow-2xl border-4 border-monash">
                     <div class="bg-monash p-6 text-white text-center">
-                        <p class="text-[10px] tracking-[0.3em] opacity-70 mb-1 uppercase">Monash Persona Indicator</p>
+                        <p class="text-[10px] tracking-[0.3em] opacity-70 mb-1 uppercase">Monash Persona Indicator 2.0</p>
                         <h3 id="poster-type" class="text-4xl font-black italic tracking-tighter">TYPE</h3>
                         <p id="poster-name" class="text-lg font-bold mt-1"></p>
                     </div>
                     <div class="p-4">
-                        <img id="poster-img" src="" class="w-full rounded-xl mb-4 border border-slate-100">
+                        <img id="poster-img" src="" class="w-full rounded-xl mb-4 border border-slate-100 shadow-sm">
                         <div class="bg-slate-50 p-4 rounded-xl border-l-4 border-monash mb-4">
-                            <p id="poster-motto" class="text-slate-800 font-bold text-sm leading-tight italic"></p>
+                            <p id="poster-motto" class="text-slate-800 font-bold text-sm italic"></p>
                         </div>
                         <div class="flex justify-between items-center px-2 pb-2">
                             <div class="text-left leading-tight">
                                 <p class="text-[10px] text-slate-400 font-bold uppercase">Candidate</p>
-                                <p class="text-[11px] font-black text-monash">MATI 认证莫纳什校友</p>
+                                <p class="text-[11px] font-black text-monash italic">MATI CERTIFIED 2.0</p>
                             </div>
                             <div class="w-14 h-14 bg-white rounded p-0.5 shadow-sm border border-slate-100 overflow-hidden shrink-0">
                                 <img src="./assets/Share.png" alt="QR Code" class="w-full h-full object-contain">
@@ -130,61 +111,139 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-white text-center mt-6 text-sm font-medium animate-pulse opacity-70">—— 截屏保存，分享你的莫纳什人格 ——</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // 数据库与逻辑
         const matiDatabase = {
             "CGOF": { name: "华尔街之狼", ip: "乔丹·贝尔福特", motto: "哪怕每天要在Flinders挤火车，我也要在CBD赢过所有人。", desc: "简历厚过砖，白天Clayton卷GPA，晚上City卷Networking。", nemesis: "路人A、图书馆保安", partner: "美国队长", enemy: "大雄" },
-            "CGOE": { name: "穿普拉达的女王", ip: "米兰达 (Miranda)", motto: "如果拿不到HD，那一定是因为你穿得太土了。", desc: "精致的代名词。住在City高层，拿最稳的分，喝最贵的Brunch。", nemesis: "修路噪音", partner: "芭比", enemy: "阿甘" },
-            "CGHF": { name: "蝙蝠侠 (Batman)", ip: "布鲁斯·韦恩", motto: "我不是在Matheson，我是在守护我的哥谭。", desc: "住在City百万公寓里独处。夜色是他的保护色，刷题是他的修行。", nemesis: "Matheson五楼的咳嗽声", partner: "钢铁侠", enemy: "杰克船长" },
-            "CGHE": { name: "神探夏洛克", ip: "Sherlock Holmes", motto: "平凡的校园生活只会让大脑生锈。", desc: "极高智商，低耗电模式。住在繁华中心但只活在自己的逻辑里。", nemesis: "没有逻辑的小组队友", partner: "灭霸", enemy: "罗恩·韦斯莱" },
-            "SGOF": { name: "美国队长", ip: "Steve Rogers", motto: "I can do this all day (指的是复习)。", desc: "莫纳什正义化身，Clayton领袖。GPA 4.0且精力无限的六边形战士。", nemesis: "深夜不睡觉的舍友", partner: "华尔街之狼", enemy: "了不起的盖茨比" },
-            "SGOE": { name: "芭比", ip: "Barbie", motto: "在Clayton，每天都是最棒的一天！", desc: "校园社交中心。虽然也努力学习，但更爱和朋友们聚在一起闪耀。", nemesis: "掉妆、8点的早课", partner: "穿普拉达的女王", enemy: "绿巨人" },
-            "SGHF": { name: "灭霸", ip: "Thanos", motto: "只要响指一响，Assignment就会消失一半。", desc: "极度自律。不需要社交，只需要更快的网速和更安静的图书馆。", nemesis: "所有形式的社交聚会", partner: "神探夏洛克", enemy: "杰克船长" },
-            "SGHE": { name: "甘道夫", ip: "Gandalf", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "睿智但慢节奏。深居简出，只在Final期间现身施展魔法。", nemesis: "查重报告 (Turnitin)", partner: "神探夏洛克", enemy: "钢铁侠" },
-            "CDOF": { name: "了不起的盖茨比", ip: "Gatsby", motto: "在那盏绿灯熄灭前，我一定能交上我的Essay。", desc: "住在城里，夜夜笙歌。挥霍青春，然后在清晨极限赶Due。", nemesis: "23:59的闹钟", partner: "杰克船长", enemy: "美国队长" },
-            "CDOE": { name: "杰克船长", ip: "Jack Sparrow", motto: "你们会永远记住这一天，因为你们差一点就过不了Assignment！", desc: "又菜又爱玩。虽然满身Due债，但总能靠运气和奇葩操作险象环生。", nemesis: "学校停车位、Final", partner: "了不起的盖茨比", enemy: "灭霸" },
-            "CDHF": { name: "钢铁侠 (Iron Man)", ip: "Tony Stark", motto: "我不需要睡觉，我只需要能量棒和红牛。", desc: "天才但熬夜成瘾。靠高科技和毅力在深夜创造神迹，社交电量极低。", nemesis: "低电量警告", partner: "蝙蝠侠", enemy: "甘道夫" },
-            "CDHE": { name: "大雄 (Nobita)", ip: "野比大雄", motto: "多啦A梦，快借我一个写Assignment的道具！", desc: "住在City最贵的房，睡最长的觉。极限摆烂，遇到Due就求救。", nemesis: "所有的考试", partner: "罗恩·韦斯莱", enemy: "华尔街之狼" },
-            "SDOF": { name: "家人侠 (Dom)", ip: "Dominic Toretto", motto: "Family！", desc: "“Family”战神，东南区最强局王。", nemesis: "没有外卖的深夜", partner: "芭比", enemy: "灭霸" },
-            "SDOE": { name: "罗恩·韦斯莱", ip: "Ron Weasley", motto: "为什么总是我？我只是想在东南区吃个鸡腿。", desc: "东南区摆烂天才。虽然能躺平绝不站着，但总能莫名其妙跟着混过考试。", nemesis: "蜘蛛、高难度的Lab", partner: "大雄", enemy: "神探夏洛克" },
-            "SDHF": { name: "绿巨人 (Hulk)", ip: "Bruce Banner", motto: "不要激怒我，否则我会把电脑屏幕拍碎！", desc: "平时沉默寡言。被DDL激怒后瞬间变身爆肝狂魔，横扫所有论文。", nemesis: "电脑死机", partner: "钢铁侠", enemy: "芭比" },
-            "SDHE": { name: "阿甘 (Gump)", ip: "Forrest Gump", motto: "生活就像一盒巧克力，你永远不知道下一门会不会挂。", desc: "思想单纯，拒绝复杂社交。坐在长椅上等 Pass 的校园持久幸存者。", nemesis: "复杂的Group Work", partner: "莫纳什水豚", enemy: "穿普拉达的女王" },
-            "ALCH": { name: "绝命酒蒙子", ip: "雷神索尔 (Thor)", motto: "我的血液里80%是酒，20%是Clayton的妖风。", desc: "作业可以不交，局不能不去，你是莫纳什酒精文化的灵魂。", nemesis: "全校Tutor", partner: "杰克船长", enemy: "早八人 (Early Birds)" },
-            "B-B-B-B": { name: "莫纳什水豚", ip: "Capybara", motto: "只要我不发疯，Clayton的妖风就吹不到我。", desc: "情绪稳定得令人害怕。达到留学的最高境界：Inner Peace。", nemesis: "DDL", partner: "阿甘", enemy: "所有人(开玩笑的)" }
+            "CGOE": { name: "穿普拉达的女王", ip: "米兰达 (Miranda)", motto: "如果拿不到HD，那一定是因为你穿得太土了。", desc: "对细节有极致要求的代名词。住在City高层，拿最稳的分，过最有质感的生活。", nemesis: "环境杂音", partner: "芭比", enemy: "阿甘" },
+            "CGHF": { name: "蝙蝠侠 (Batman)", ip: "布鲁斯·韦恩", motto: "我不是在Matheson，我是在守护我的哥谭。", desc: "在繁华中心保持独立。夜色是保护色，刷题是唯一的修行。", nemesis: "Matheson五楼的咳嗽声", partner: "钢铁侠", enemy: "杰克船长" },
+            "CGHE": { name: "神探夏洛克", ip: "Sherlock Holmes", motto: "平凡的校园生活只会让大脑生锈。", desc: "极高智商，低耗电模式。住在繁华中心但只活在自己的逻辑里。", nemesis: "缺乏逻辑的沟通", partner: "灭霸", enemy: "罗恩·韦斯莱" },
+            "SGOF": { name: "美国队长", ip: "Steve Rogers", motto: "I can do this all day (指的是复习)。", desc: "莫纳什正义化身，Clayton领袖。GPA 4.0且精力无限的六边形战士。", nemesis: "深夜不规律的干扰", partner: "华尔街之狼", enemy: "盖茨比" },
+            "SGOE": { name: "芭比", ip: "Barbie", motto: "在Clayton，每天都是最棒的一天！", desc: "校园社交中心。自带高饱和度光环，总能把平淡的村里生活过出剧集感。", nemesis: "掉妆、8点的早课", partner: "穿普拉达的女王", enemy: "绿巨人" },
+            "SGHF": { name: "灭霸", ip: "Thanos", motto: "只要响指一响，Assignment就会消失一半。", desc: "极度自律。不需要冗余社交，追求效率与秩序的极致化。", nemesis: "所有非必要的聚会", partner: "神探夏洛克", enemy: "杰克船长" },
+            "SGHE": { name: "甘道夫", ip: "Gandalf", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "深居简出但洞察全局。只在关键时刻现身，对学术有神秘的掌控力。", nemesis: "不严谨的查重报告", partner: "神探夏洛克", enemy: "钢铁侠" },
+            "CDOF": { name: "了不起的盖茨比", ip: "Gatsby", motto: "在那盏绿灯熄灭前，我一定能交上我的Essay。", desc: "进场晚，但动静大。在截止日期前爆发惊人能量的浪漫主义者。", nemesis: "23:59的闹钟", partner: "杰克船长", enemy: "美国队长" },
+            "CDOE": { name: "杰克船长", ip: "Jack Sparrow", motto: "你们会永远记住这一天，因为你们差一点就过不了Assignment！", desc: "策略性生存大师。利用运气与直觉在DDL的海浪中极限冲浪。", nemesis: "条块化的学术规章", partner: "盖茨比", enemy: "灭霸" },
+            "CDHF": { name: "钢铁侠 (Iron Man)", ip: "Tony Stark", motto: "我不需要睡觉，我只需要能量棒和红牛。", desc: "天才熬夜选手。靠咖啡因和高科技在凌晨创造奇迹，社交电量极低。", nemesis: "低电量预警", partner: "蝙蝠侠", enemy: "甘道夫" },
+            "CDHE": { name: "大雄 (Nobita)", ip: "野比大雄", motto: "多啦A梦，快借我一个写Assignment的道具！", desc: "极致的能量节省模式。在截止日期前会产生极强的求助防御机制。", nemesis: "所有形式的硬核测试", partner: "罗恩·韦斯莱", enemy: "华尔街之狼" },
+            "SDOF": { name: "家人侠 (Dom)", ip: "Dominic Toretto", motto: "Family！", desc: "由于对固定圈子的极高忠诚度，成为了东南区的社交联结枢纽。", nemesis: "孤军奋战的场景", partner: "芭比", enemy: "灭霸" },
+            "SDOE": { name: "罗恩·韦斯莱", ip: "Ron Weasley", motto: "为什么总是我？我只是想在东南区吃个鸡腿。", desc: "平凡中的幸存者。虽推崇能量节省，但在关键时刻总能被动通关。", nemesis: "高难度的实操Lab", partner: "大雄", enemy: "神探夏洛克" },
+            "SDHF": { name: "绿巨人 (Hulk)", ip: "Bruce Banner", motto: "不要激怒我，否则我会把电脑屏幕拍碎！", desc: "平时温和沉默。一旦进入压力峰值会瞬间爆发，横扫所有论文任务。", nemesis: "崩溃的系统更新", partner: "钢铁侠", enemy: "芭比" },
+            "SDHE": { name: "阿甘 (Gump)", ip: "Forrest Gump", motto: "生活就像一盒巧克力，你永远不知道下一门会不会挂。", desc: "对外部环境极度钝感。保持简单的生活逻辑，在莫纳什长跑中稳健前行。", nemesis: "复杂的规则逻辑", partner: "水豚", enemy: "穿普拉达的女王" },
+            "ALCH": { name: "绝命酒蒙子", ip: "雷神索尔 (Thor)", motto: "我的血液里80%是酒，20%是Clayton的妖风。", desc: "莫纳什酒精亚文化的灵魂使者。比起绩点，更在意今夜的酒精浓度。", nemesis: "任何禁酒规定", partner: "杰克船长", enemy: "早八人" },
+            "B-B-B-B": { name: "莫纳什水豚", ip: "Capybara", motto: "只要我不发疯，Clayton的妖风就吹不到我。", desc: "情绪极度稳定。在City与郊区、卷与躺之间达成了某种神秘的禅意平衡。", nemesis: "所有的突发干扰", partner: "阿甘", enemy: "混乱制造者" }
         };
 
         const questions = [
-            { q: "1. 马上要签下学期的房子了，你的租房首选地段是？", opts: [ {text: "A. 必须 City！下楼就是维妈、唐人街...", val: "C"}, {text: "B. 选个折中点吧，比如 Carnegie 或者 Caufield...", val: "B"}, {text: "C. 绝对是 Clayton/Caulfield 步行区...", val: "S"} ] },
-            { q: "2. 周末中午饿醒了，打开手机想解决午饭，你会选择？", opts: [ {text: "A. 坐火车进城去吃网红 Brunch...", val: "C"}, {text: "B. 去附近的 Chadstone 或 M-City 吃一顿...", val: "B"}, {text: "C. 穿着睡衣下楼去亚超买点速冻饺子...", val: "S"} ] },
-            { q: "3. 刚交完一个极其痛苦的 Assignment，你决定犒劳自己？", opts: [ {text: "A. 进城吃顿平时舍不得吃的米其林...", val: "C"}, {text: "B.【 🍺 】直接冲向 The Nott 先干三大杯！", val: "B", isAlc: true}, {text: "C. 谁也别烦我，睡个天昏地暗。", val: "S"} ] },
-            { q: "4. 没课的下午，你最常出没的地点是？", opts: [ {text: "A. City 的各大巷子和咖啡馆...", val: "C"}, {text: "B. 学校的 Campus Centre 周边...", val: "B"}, {text: "C. 只要没课就立刻闪现回宿舍...", val: "S"} ] },
-            { q: "5. 朋友约你周末聚一聚，你最希望定在哪？", opts: [ {text: "A. 当然是 City！唱个歌打个卡。", val: "C"}, {text: "B. 找个在大家通勤路线中间的地方。", val: "B"}, {text: "C. 要不你们买点菜来我家做饭吧？", val: "S"} ] },
-            { q: "6. Moodle 上发布了一篇三周后交的 Essay，你的内心 OS 是：", opts: [ {text: "A. 赶紧打开 Word 建好文档排版...", val: "G"}, {text: "B. 先粗略扫一眼，构思一下...", val: "B"}, {text: "C. 三周？那不就是下个世纪的事？", val: "D"} ] },
-            { q: "7. 这学期的 Lecture 录像，你通常是怎么处理的？", opts: [ {text: "A. 每周按时看，笔记记得非常全。", val: "G"}, {text: "B. 攒个两三周看一次，倍速播放。", val: "B"}, {text: "C. 考前开启“量子速读”模式。", val: "D"} ] },
-            { q: "8. 【 🍺 】小组作业第一次开会后，你会提议？", opts: [ {text: "A. 建立 Google Doc 分配任务进度。", val: "G"}, {text: "B.【 🍺 】今晚先找个地方喝一杯破个冰？", val: "B", isAlc: true}, {text: "C. 发个表情包，等别人先推进。", val: "D"} ] },
-            { q: "9. 期末备考周 (SWOTVAC) 的日常，你属于哪种？", opts: [ {text: "A. 驻扎在图书馆的“定海神针”。", val: "G"}, {text: "B. 学一会儿玩一会儿手机的陪伴式复习。", val: "B"}, {text: "C. 开启“女娲补天”模式，48小时学完。", val: "D"} ] },
-            { q: "10. 当遇到实在解不出的题目时：", opts: [ {text: "A. 发邮件问 Tutor，不搞懂誓不罢休。", val: "G"}, {text: "B. 问问同学思路，稍微借鉴。", val: "B"}, {text: "C. 使用 ChatGPT 魔法，尽人事听天命。", val: "D"} ] },
-            { q: "11. 周五晚上的理想状态是：", opts: [ {text: "A. 各种局走起！剧本杀 KTV。", val: "O"}, {text: "B. 有约就去，没约在家待着也行。", val: "B"}, {text: "C. 宅家洗澡刷剧，太幸福了。", val: "H"} ] },
-            { q: "12. 【 🍺 】朋友拉你去参加一个你不认识的局：", opts: [ {text: "A. 走啊！又可以认识新朋友了。", val: "O"}, {text: "B.【 🍺 】有酒吗？只要有酒我就去！", val: "B", isAlc: true}, {text: "C. 陌生社交太耗电，不想去。", val: "H"} ] },
-            { q: "13. 新学期 O-Week 逛社团招新摊位：", opts: [ {text: "A. 扫码加十几个群，主动勾搭学长。", val: "O"}, {text: "B. 就跟熟悉的同学走走看看。", val: "B"}, {text: "C. 拿了免费礼品就匆匆撤退。", val: "H"} ] },
-            { q: "14. 在校园里偶遇只见过一次面的同学：", opts: [ {text: "A. 主动大喊名字热聊两句。", val: "O"}, {text: "B. 眼神对上了就点头致意。", val: "B"}, {text: "C. 低头假装看手机迅速走开。", val: "H"} ] },
-            { q: "15. 你的微信回复状态通常是：", opts: [ {text: "A. 秒回狂人，活跃在各个群聊。", val: "O"}, {text: "B. 正常速度，工作群稍微晚点。", val: "B"}, {text: "C. 轮回，用意念回复过就算回了。", val: "H"} ] },
-            { q: "16. 经历了一天高强度满课，晚上的状态是：", opts: [ {text: "A. 满血复活去撸铁打球。", val: "F"}, {text: "B. 虚脱，吃顿好的能回一半血。", val: "B"}, {text: "C. 物理宕机，开启极限省电模式。", val: "E"} ] },
-            { q: "17. 放小长假的计划安排：", opts: [ {text: "A. 特种兵行程，步数两万起。", val: "F"}, {text: "B. 随便逛逛，主打休闲。", val: "B"}, {text: "C. 换个地方睡觉，静静发呆。", val: "E"} ] },
-            { q: "18. 【 🍺 】经历了一连串打击，你回血的方式是：", opts: [ {text: "A. 跑五公里或者疯狂吐槽排空。", val: "F"}, {text: "B.【 🍺 】提一打酒，用酒精冲刷悲伤。", val: "B", isAlc: true}, {text: "C. 点顿罪恶外卖，睡 12 小时。", val: "E"} ] },
-            { q: "19. 参加一节长达 2 小时枯燥的 Seminar：", opts: [ {text: "A. 保持专注，积极互动。", val: "F"}, {text: "B. 前段清醒，后半段神游。", val: "B"}, {text: "C. 选后排角落，灵魂出窍。", val: "E"} ] },
-            { q: "20. 每天早上的起床困难指数：", opts: [ {text: "A. 弹射起步，还能化个全妆。", val: "F"}, {text: "B. 按两次闹钟，基本不迟到。", val: "B"}, {text: "C. 全靠 Due 续命，否则地老天荒。", val: "E"} ] }
+            { q: "1. 考虑下学期的住处时，你对地理位置的优先级是？", opts: [ 
+                {text: "A. 靠近核心商圈（如 City），哪怕空间局促也希望下楼即是繁华。", val: "C", w: 1.5}, 
+                {text: "B. 偏好安静的社区环境（如 Clayton），节省通勤精力以保障个人空间。", val: "S", w: 1.5}, 
+                {text: "C. 倾向于交通枢纽节点（如 Carnegie），在便利性与安静程度间寻求平衡。", val: "B", w: 1.0} 
+            ] },
+            { q: "2. 关于周末的能量补给方式，哪种场景更吸引你？", opts: [ 
+                {text: "A. 待在熟悉的居家空间，通过低频率的外部接触来深度休整。", val: "S", w: 1.0}, 
+                {text: "B. 前往具有设计感的网红空间或城中热点，获取视觉与感官刺激。", val: "C", w: 1.0}, 
+                {text: "C. 在区域性的商业中心进行适度消遣，保持一定的生活节奏感。", val: "B", w: 1.0} 
+            ] },
+            { q: "3.【 🍺 】完成高强度任务后，你首选的压力释放路径是？", opts: [ 
+                {text: "A.【 🍺 】前往 The Nott 或酒吧，通过酒精和人群频率快速切换大脑频道。", val: "B", isAlc: true, w: 1.0}, 
+                {text: "B. 预定一家高评价的餐厅进行正式餐饮体验，奖励自己的感官享受。", val: "C", w: 1.2}, 
+                {text: "C. 彻底切断外部干扰，进入无干扰的深度睡眠或独处模式。", val: "S", w: 1.2} 
+            ] },
+            { q: "4. 面对一个三周后截止的长篇 Essay，你的启动逻辑是？", opts: [ 
+                {text: "A. 预留出最后的‘高压窗口期’，利用极限状态下的爆发力完成产出。", val: "D", w: 1.5}, 
+                {text: "B. 立即建立结构框架并进行初步排版，通过前置进度缓解后期焦虑。", val: "G", w: 1.5}, 
+                {text: "C. 设定分阶段提醒，在截止前找到一个既不紧迫也不松散的节奏动笔。", val: "B", w: 1.0} 
+            ] },
+            { q: "5. 你如何处理本学期的 Lecture 录像资源？", opts: [ 
+                {text: "A. 保持实时同步，习惯于当周消化并整理出系统性的笔记。", val: "G", w: 1.2}, 
+                {text: "B. 考前进行针对性的‘知识补天’，在短时间内高浓度提取考点信息。", val: "D", w: 1.2}, 
+                {text: "C. 按照课程章节模块进行成块处理，确保逻辑完整后再推进。", val: "B", w: 1.0} 
+            ] },
+            { q: "6.【 🍺 】在小组作业初期的协调会议上，你通常扮演？", opts: [ 
+                {text: "A.【 🍺 】提议先在线下进行酒精破冰，认为良好的私人关系是合作的基础。", val: "B", isAlc: true, w: 1.0}, 
+                {text: "B. 流程推动者，倾向于第一时间确立各成员的责任边界与进度表。", val: "G", w: 1.0}, 
+                {text: "C. 观察性成员，在明确任务难度和他人投入度后再决定自己的参与程度。", val: "D", w: 1.0} 
+            ] },
+            { q: "7. 周五晚上的理想状态对你而言意味着？", opts: [ 
+                {text: "A. 处于群体社交中（如聚餐、KTV），在互动中获取情感能量。", val: "O", w: 1.5}, 
+                {text: "B. 维持极小范围的熟人互动，严格筛选参与人员以保障质量。", val: "B", w: 1.0}, 
+                {text: "C. 回归私人领地，通过独处（如观影、阅读）来修复社交损耗。", val: "H", w: 1.5} 
+            ] },
+            { q: "8.【 🍺 】被拉入一个存在大量陌生人的社交场合时：", opts: [ 
+                {text: "A.【 🍺 】询问是否有高品质酒精供应，将其作为压力的‘缓冲剂’。", val: "B", isAlc: true, w: 1.0}, 
+                {text: "B. 展现出高社交探索欲，认为这是扩展认知边界的好机会。", val: "O", w: 1.2}, 
+                {text: "C. 保持礼貌性社交距离，寻找契机撤回到舒适的心理安全区。", val: "H", w: 1.2} 
+            ] },
+            { q: "9. 在校园内偶遇仅有一面之缘的同学，你的反应是？", opts: [ 
+                {text: "A. 策略性回避，在确认未被注意的情况下选择改变路线。", val: "H", w: 1.0}, 
+                {text: "B. 评估社交必要性，根据对方状态决定是示意还是停下交谈。", val: "B", w: 1.0}, 
+                {text: "C. 主动发起对话，通过即时的互动确认彼此的联结。", val: "O", w: 1.0} 
+            ] },
+            { q: "10. 经历了一整天高强度的跨校区满课后：", opts: [ 
+                {text: "A. 依然有余力进行高强度的体力活动（如健身或球类运动）。", val: "F", w: 1.5}, 
+                {text: "B. 能量彻底耗尽，必须立即关闭所有交流进入‘静默充电’模式。", val: "E", w: 1.5}, 
+                {text: "C. 通过‘碎片化’的消遣（如短视频、零食）进行心理转场。", val: "B", w: 1.0} 
+            ] },
+            { q: "11. 关于假期的规划风格，你更倾向于？", opts: [ 
+                {text: "A. 深度停留模式，在单一地点进行长时间的感官沉浸。", val: "E", w: 1.0}, 
+                {text: "B. 高效探索模式，在有限时间内覆盖更多目标点。", val: "F", w: 1.0}, 
+                {text: "C. 弹性休假模式，根据当下的即时状态决定活动强度。", val: "B", w: 1.0} 
+            ] },
+            { q: "12.【 🍺 】遇到连续的负面压力时，你的回升策略是？", opts: [ 
+                {text: "A. 增加多巴胺摄入（如点一份高热量外卖）并进入深度休眠。", val: "E", w: 1.2}, 
+                {text: "B. 通过身体的剧烈消耗（如大运动量）来排空负面情绪。", val: "F", w: 1.2}, 
+                {text: "C.【 🍺 】通过高酒精浓度或密集的酒精社交来截断悲伤逻辑。", val: "B", isAlc: true, w: 1.0} 
+            ] },
+            { q: "13. 如果要举办一个 5 人聚会，你偏好的场地属性是？", opts: [ 
+                {text: "A. 具有独特格调的 City 私人空间或露台。", val: "C", w: 1.0}, 
+                {text: "B. 宽敞且具有居家烟火气的郊区住宅内。", val: "S", w: 1.0}, 
+                {text: "C. 选址在公共交通便利的中间区域餐厅。", val: "B", w: 1.0} 
+            ] },
+            { q: "14. 面对难度极大的学术挑战时：", opts: [ 
+                {text: "A. 频繁与导师沟通并拆解问题，追求逻辑严密性。", val: "G", w: 1.0}, 
+                {text: "B. 利用强大的搜索能力与 AI 工具进行高通量的快速解决。", val: "D", w: 1.0}, 
+                {text: "C. 观察并收集同伴进度，在确信有可行路径后再投入。", val: "B", w: 1.0} 
+            ] },
+            { q: "15. 你的即时通讯处理习惯是？", opts: [ 
+                {text: "A. 严格分类机制，只针对高价值或紧急信息进行反馈。", val: "B", w: 1.0}, 
+                {text: "B. 极高频率参与度，倾向于秒回并活跃在多个话题组中。", val: "O", w: 1.0}, 
+                {text: "C. 异步处理习惯，认为用意念回复过即完成了社交。", val: "H", w: 1.0} 
+            ] },
+            { q: "16. 每天清晨起床时的状态反馈是？", opts: [ 
+                {text: "A. 迅速激活，能有条不紊地完成复杂的出门准备。", val: "F", w: 1.0}, 
+                {text: "B. 需要多次缓冲，直至最后时刻才被动觉醒。", val: "E", w: 1.0}, 
+                {text: "C. 通过精确计算余量，维持一个低能耗但准时的过程。", val: "B", w: 1.0} 
+            ] },
+            { q: "17. 下午在图书馆，你更容易被哪种环境干扰？", opts: [ 
+                {text: "A. 过分死寂的环境（让你感到莫名压抑）。", val: "C", w: 1.0}, 
+                {text: "B. 任何细微的非自然声响（你对环境高度敏感）。", val: "S", w: 1.0}, 
+                {text: "C. 虽然嘈杂但充满生活气息的公共区域。", val: "B", w: 1.0} 
+            ] },
+            { q: "18. 在小组作业中遇到‘白嫖’队友，你的行动是？", opts: [ 
+                {text: "A. 坚决交涉并上报 Tutor，维护学术正义。", val: "G", w: 1.0}, 
+                {text: "B. 算了，自己动手做完，效率第一不纠结。", val: "D", w: 1.0}, 
+                {text: "C. 先观察其他队友反应，跟随多数人的策略。", val: "B", w: 1.0} 
+            ] },
+            { q: "19. 参加 O-Week 社团活动的目的更多是为了？", opts: [ 
+                {text: "A. 增加人脉储备，寻找潜在的资源联结。", val: "O", w: 1.0}, 
+                {text: "B. 寻找纯粹的同好兴趣点，拒绝无效社交。", val: "B", w: 1.0}, 
+                {text: "C. 收集实用的周边礼品，对人群保持审慎观察。", val: "H", w: 1.0} 
+            ] },
+            { q: "20. 你认为自己对待‘新事物/新规定’的接受度是？", opts: [ 
+                {text: "A. 第一时间上手测试，享受探索的兴奋感。", val: "F", w: 1.0}, 
+                {text: "B. 等到不得不使用时才去了解，追求稳定。", val: "E", w: 1.0}, 
+                {text: "C. 在观望他人评价后再决定投入精力的程度。", val: "B", w: 1.0} 
+            ] }
         ];
 
         let currentIndex = 0;
         let score = { C:0, S:0, G:0, D:0, O:0, H:0, F:0, E:0 };
-        let bCount = 0; let alcCount = 0;
+        let bScore = 0; let alcCount = 0;
 
         function startTest() {
             document.getElementById('welcome-screen').classList.add('hidden');
@@ -201,12 +260,13 @@
             container.innerHTML = '';
             data.opts.forEach(opt => {
                 const b = document.createElement('button');
-                b.className = "w-full text-left p-4 border-2 border-slate-100 rounded-2xl hover:border-monash hover:bg-blue-50 transition-all font-medium text-slate-700 bg-white active:scale-[0.98]";
+                b.className = "w-full text-left p-4 border-2 border-slate-100 rounded-2xl hover:border-monash hover:bg-blue-50 transition-all font-medium text-slate-700 bg-white active:scale-[0.98] text-sm leading-snug";
                 b.innerText = opt.text;
                 b.onclick = () => {
-                    if(opt.val === 'B') bCount++;
+                    const w = opt.w || 1.0;
+                    if(opt.val === 'B') bScore += w;
                     if(opt.isAlc) alcCount++;
-                    if(opt.val !== 'B') score[opt.val]++;
+                    if(opt.val !== 'B') score[opt.val] += w;
                     currentIndex++;
                     if(currentIndex < 20) renderQuestion(); else showResult();
                 };
@@ -214,10 +274,10 @@
             });
         }
 
-        const tieBreaker = (val1, val2, char1, char2) => {
+        function tieBreaker(val1, val2, char1, char2) {
             if (val1 === val2) return Math.random() > 0.5 ? char1 : char2;
             return val1 > val2 ? char1 : char2;
-        };
+        }
 
         function showResult(forcedCode = null) {
             document.getElementById('question-screen').classList.add('hidden');
@@ -226,8 +286,8 @@
 
             let code = forcedCode;
             if (!code) {
-                if (alcCount === 4) code = "ALCH";
-                else if (bCount >= 10) code = "B-B-B-B";
+                if (alcCount >= 4) code = "ALCH";
+                else if (bScore >= 11) code = "B-B-B-B";
                 else {
                     code = tieBreaker(score.C, score.S, 'C', 'S') + 
                            tieBreaker(score.G, score.D, 'G', 'D') + 
@@ -253,9 +313,9 @@
             Object.keys(matiDatabase).forEach(code => {
                 const item = matiDatabase[code];
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100 flex flex-col active:scale-95 transition-transform";
+                card.className = "bg-white rounded-xl overflow-hidden shadow-sm border border-slate-100 flex flex-col active:scale-95 transition-transform cursor-pointer";
                 card.onclick = () => { showResult(code); closeArchive(); };
-                card.innerHTML = `<div class="aspect-square bg-slate-50 relative"><img src="./assets/${code}.png" class="w-full h-full object-cover"></div><div class="p-2 text-center"><p class="font-black text-slate-800 text-[10px] truncate leading-tight">${item.name}</p></div>`;
+                card.innerHTML = `<div class="aspect-square bg-slate-50"><img src="./assets/${code}.png" class="w-full h-full object-cover"></div><div class="p-2 text-center"><p class="font-black text-slate-800 text-[10px] truncate">${item.name}</p></div>`;
                 grid.appendChild(card);
             });
             document.getElementById('archive-screen').classList.remove('hidden');
