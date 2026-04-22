@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATI 2.0 | Monash Persona Indicator</title>
+    <title>MATI | Monash Persona Indicator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-monash { background-color: #006DAE; }
@@ -22,8 +22,9 @@
 
         <div id="welcome-screen" class="p-10 text-center fade-in">
             <h1 class="text-5xl font-black text-slate-900 mb-2 italic tracking-tighter">MATI</h1>
-            <p class="text-monash font-bold text-sm tracking-[0.2em] mb-10">莫纳什人格测试 2.0</p>
+            <p class="text-monash font-bold text-sm tracking-[0.2em] mb-10">莫纳什人格测试 </p>
             <div class="mb-10 text-slate-400 text-[10px] leading-relaxed uppercase tracking-tight space-y-1 bg-slate-50 py-4 rounded-xl">
+                <p>由莫纳什大学校友会制作，仅图一乐</p>
                 <p>栖息偏好 / 战斗模式 / 社交雷达 / 能量引擎</p>
                 <p class="pt-1 text-slate-300 font-medium">由专业逻辑与莫纳什梗引擎驱动</p>
             </div>
@@ -149,8 +150,8 @@
                 {text: "B. 前往具有设计感的网红空间或城中热点，获取视觉与感官刺激。", val: "C", w: 1.0}, 
                 {text: "C. 在区域性的商业中心进行适度消遣，保持一定的生活节奏感。", val: "B", w: 1.0} 
             ] },
-            { q: "3.【 🍺 】完成高强度任务后，你首选的压力释放路径是？", opts: [ 
-                {text: "A.【 🍺 】前往 The Nott 或酒吧，通过酒精和人群频率快速切换大脑频道。", val: "B", isAlc: true, w: 1.0}, 
+            { q: "3. 完成高强度任务后，你首选的压力释放路径是？", opts: [ 
+                {text: "A. 前往 The Nott 或酒吧，通过酒精和人群频率快速切换大脑频道。", val: "B", isAlc: true, w: 1.0}, 
                 {text: "B. 预定一家高评价的餐厅进行正式餐饮体验，奖励自己的感官享受。", val: "C", w: 1.2}, 
                 {text: "C. 彻底切断外部干扰，进入无干扰的深度睡眠或独处模式。", val: "S", w: 1.2} 
             ] },
@@ -164,8 +165,8 @@
                 {text: "B. 考前进行针对性的‘知识补天’，在短时间内高浓度提取考点信息。", val: "D", w: 1.2}, 
                 {text: "C. 按照课程章节模块进行成块处理，确保逻辑完整后再推进。", val: "B", w: 1.0} 
             ] },
-            { q: "6.【 🍺 】在小组作业初期的协调会议上，你通常扮演？", opts: [ 
-                {text: "A.【 🍺 】提议先在线下进行酒精破冰，认为良好的私人关系是合作的基础。", val: "B", isAlc: true, w: 1.0}, 
+            { q: "6. 在小组作业初期的协调会议上，你通常扮演？", opts: [ 
+                {text: "A. 提议先在线下进行酒精破冰，认为良好的私人关系是合作的基础。", val: "B", isAlc: true, w: 1.0}, 
                 {text: "B. 流程推动者，倾向于第一时间确立各成员的责任边界与进度表。", val: "G", w: 1.0}, 
                 {text: "C. 观察性成员，在明确任务难度和他人投入度后再决定自己的参与程度。", val: "D", w: 1.0} 
             ] },
@@ -174,8 +175,8 @@
                 {text: "B. 维持极小范围的熟人互动，严格筛选参与人员以保障质量。", val: "B", w: 1.0}, 
                 {text: "C. 回归私人领地，通过独处（如观影、阅读）来修复社交损耗。", val: "H", w: 1.5} 
             ] },
-            { q: "8.【 🍺 】被拉入一个存在大量陌生人的社交场合时：", opts: [ 
-                {text: "A.【 🍺 】询问是否有高品质酒精供应，将其作为压力的‘缓冲剂’。", val: "B", isAlc: true, w: 1.0}, 
+            { q: "8. 被拉入一个存在大量陌生人的社交场合时：", opts: [ 
+                {text: "A. 询问是否有高品质酒精供应，将其作为压力的‘缓冲剂’。", val: "B", isAlc: true, w: 1.0}, 
                 {text: "B. 展现出高社交探索欲，认为这是扩展认知边界的好机会。", val: "O", w: 1.2}, 
                 {text: "C. 保持礼貌性社交距离，寻找契机撤回到舒适的心理安全区。", val: "H", w: 1.2} 
             ] },
@@ -194,10 +195,10 @@
                 {text: "B. 高效探索模式，在有限时间内覆盖更多目标点。", val: "F", w: 1.0}, 
                 {text: "C. 弹性休假模式，根据当下的即时状态决定活动强度。", val: "B", w: 1.0} 
             ] },
-            { q: "12.【 🍺 】遇到连续的负面压力时，你的回升策略是？", opts: [ 
+            { q: "12. 遇到连续的负面压力时，你的回升策略是？", opts: [ 
                 {text: "A. 增加多巴胺摄入（如点一份高热量外卖）并进入深度休眠。", val: "E", w: 1.2}, 
                 {text: "B. 通过身体的剧烈消耗（如大运动量）来排空负面情绪。", val: "F", w: 1.2}, 
-                {text: "C.【 🍺 】通过高酒精浓度或密集的酒精社交来截断悲伤逻辑。", val: "B", isAlc: true, w: 1.0} 
+                {text: "C. 通过高酒精浓度或密集的酒精社交来截断悲伤逻辑。", val: "B", isAlc: true, w: 1.0} 
             ] },
             { q: "13. 如果要举办一个 5 人聚会，你偏好的场地属性是？", opts: [ 
                 {text: "A. 具有独特格调的 City 私人空间或露台。", val: "C", w: 1.0}, 
