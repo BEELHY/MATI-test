@@ -76,6 +76,12 @@
                     <button onclick="retakeTest()" class="w-full py-4 text-slate-300 font-bold text-xs uppercase tracking-widest">Retake the test</button>
                 </div>
             </div>
+            <div class="p-6 border-t border-slate-100 bg-slate-50">
+                <div id="result-character" class="rounded-2xl p-4 bg-white border border-slate-100 text-slate-700 text-sm leading-relaxed">
+                    <p class="font-bold text-monash text-sm mb-2">角色介绍（占位）</p>
+                    <p id="result-character-text">这里将展示该角色的详细介绍，占位文本，后续将由具体内容替换。</p>
+                </div>
+            </div>
         </div>
 
         <div id="archive-screen" class="hidden fixed inset-0 bg-white z-50 overflow-y-auto p-4 animate-[fadeIn_0.3s_ease-out]">
@@ -120,24 +126,24 @@
 
     <script>
         const matiDatabase = {
-            "CGOF": { name: "华尔街之狼", ip: "乔丹·贝尔福特", motto: "哪怕每天要在Flinders挤火车，我也要在CBD赢过所有人。", desc: "简历厚过砖，白天Clayton卷GPA，晚上City卷Networking。", nemesis: "路人A、图书馆保安", partner: "美国队长", enemy: "大雄" },
-            "CGOE": { name: "穿普拉达的女王", ip: "米兰达 (Miranda)", motto: "如果拿不到HD，那一定是因为你穿得太土了。", desc: "对细节有极致要求的代名词。住在City高层，拿最稳的分，过最有质感的生活。", nemesis: "环境杂音", partner: "芭比", enemy: "阿甘" },
-            "CGHF": { name: "蝙蝠侠 (Batman)", ip: "布鲁斯·韦恩", motto: "我不是在Matheson，我是在守护我的哥谭。", desc: "在繁华中心保持独立。夜色是保护色，刷题是唯一的修行。", nemesis: "Matheson五楼的咳嗽声", partner: "钢铁侠", enemy: "杰克船长" },
-            "CGHE": { name: "神探夏洛克", ip: "Sherlock Holmes", motto: "平凡的校园生活只会让大脑生锈。", desc: "极高智商，低耗电模式。住在繁华中心但只活在自己的逻辑里。", nemesis: "缺乏逻辑的沟通", partner: "灭霸", enemy: "罗恩·韦斯莱" },
-            "SGOF": { name: "美国队长", ip: "Steve Rogers", motto: "I can do this all day (指的是复习)。", desc: "莫纳什正义化身，Clayton领袖。GPA 4.0且精力无限的六边形战士。", nemesis: "深夜不规律的干扰", partner: "华尔街之狼", enemy: "盖茨比" },
-            "SGOE": { name: "芭比", ip: "Barbie", motto: "在Clayton，每天都是最棒的一天！", desc: "校园社交中心。自带高饱和度光环，总能把平淡的村里生活过出剧集感。", nemesis: "掉妆、8点的早课", partner: "穿普拉达的女王", enemy: "绿巨人" },
-            "SGHF": { name: "灭霸", ip: "Thanos", motto: "只要响指一响，Assignment就会消失一半。", desc: "极度自律。不需要冗余社交，追求效率与秩序的极致化。", nemesis: "所有非必要的聚会", partner: "神探夏洛克", enemy: "杰克船长" },
-            "SGHE": { name: "甘道夫", ip: "Gandalf", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "深居简出但洞察全局。只在关键时刻现身，对学术有神秘的掌控力。", nemesis: "不严谨的查重报告", partner: "神探夏洛克", enemy: "钢铁侠" },
-            "CDOF": { name: "了不起的盖茨比", ip: "Gatsby", motto: "在那盏绿灯熄灭前，我一定能交上我的Essay。", desc: "进场晚，但动静大。在截止日期前爆发惊人能量的浪漫主义者。", nemesis: "23:59的闹钟", partner: "杰克船长", enemy: "美国队长" },
-            "CDOE": { name: "杰克船长", ip: "Jack Sparrow", motto: "你们会永远记住这一天，因为你们差一点就过不了Assignment！", desc: "策略性生存大师。利用运气与直觉在DDL的海浪中极限冲浪。", nemesis: "条块化的学术规章", partner: "盖茨比", enemy: "灭霸" },
-            "CDHF": { name: "钢铁侠 (Iron Man)", ip: "Tony Stark", motto: "我不需要睡觉，我只需要能量棒和红牛。", desc: "天才熬夜选手。靠咖啡因和高科技在凌晨创造奇迹，社交电量极低。", nemesis: "低电量预警", partner: "蝙蝠侠", enemy: "甘道夫" },
-            "CDHE": { name: "大雄 (Nobita)", ip: "野比大雄", motto: "多啦A梦，快借我一个写Assignment的道具！", desc: "极致的能量节省模式。在截止日期前会产生极强的求助防御机制。", nemesis: "所有形式的硬核测试", partner: "罗恩·韦斯莱", enemy: "华尔街之狼" },
-            "SDOF": { name: "家人侠 (Dom)", ip: "Dominic Toretto", motto: "Family！", desc: "由于对固定圈子的极高忠诚度，成为了东南区的社交联结枢纽。", nemesis: "孤军奋战的场景", partner: "芭比", enemy: "灭霸" },
-            "SDOE": { name: "罗恩·韦斯莱", ip: "Ron Weasley", motto: "为什么总是我？我只是想在东南区吃个鸡腿。", desc: "平凡中的幸存者。虽推崇能量节省，但在关键时刻总能被动通关。", nemesis: "高难度的实操Lab", partner: "大雄", enemy: "神探夏洛克" },
-            "SDHF": { name: "绿巨人 (Hulk)", ip: "Bruce Banner", motto: "不要激怒我，否则我会把电脑屏幕拍碎！", desc: "平时温和沉默。一旦进入压力峰值会瞬间爆发，横扫所有论文任务。", nemesis: "崩溃的系统更新", partner: "钢铁侠", enemy: "芭比" },
-            "SDHE": { name: "阿甘 (Gump)", ip: "Forrest Gump", motto: "生活就像一盒巧克力，你永远不知道下一门会不会挂。", desc: "对外部环境极度钝感。保持简单的生活逻辑，在莫纳什长跑中稳健前行。", nemesis: "复杂的规则逻辑", partner: "水豚", enemy: "穿普拉达的女王" },
-            "ALCH": { name: "绝命酒蒙子", ip: "雷神索尔 (Thor)", motto: "我的血液里80%是酒，20%是Clayton的妖风。", desc: "莫纳什酒精亚文化的灵魂使者。比起绩点，更在意今夜的酒精浓度。", nemesis: "任何禁酒规定", partner: "杰克船长", enemy: "早八人" },
-            "B-B-B-B": { name: "莫纳什水豚", ip: "Capybara", motto: "只要我不发疯，Clayton的妖风就吹不到我。", desc: "情绪极度稳定。在City与郊区、卷与躺之间达成了某种神秘的禅意平衡。", nemesis: "所有的突发干扰", partner: "阿甘", enemy: "混乱制造者" }
+            "CGOF": { name: "华尔街之狼", ip: "乔丹·贝尔福特", motto: "哪怕每天要在Flinders挤火车，我也要在CBD赢过所有人。", desc: "简历厚过砖，白天Clayton卷GPA，晚上City卷Networking。", nemesis: "路人A、图书馆保安", partner: "美国队长", enemy: "大雄", character: "华尔街之狼：追求成就与竞争，白天刷GPA、夜晚做networking的城市奋斗者（占位）。" },
+            "CGOE": { name: "穿普拉达的女王", ip: "米兰达 (Miranda)", motto: "如果拿不到HD，那一定是因为你穿得太土了。", desc: "对细节有极致要求的代名词。住在City高层，拿最稳的分，过最有质感的生活。", nemesis: "环境杂音", partner: "芭比", enemy: "阿甘", character: "穿普拉达的女王：注重品味与细节，生活与学术同样追求高标准（占位）。" },
+            "CGHF": { name: "蝙蝠侠 (Batman)", ip: "布鲁斯·韦恩", motto: "我不是在Matheson，我是在守护我的哥谭。", desc: "在繁华中心保持独立。夜色是保护色，刷题是唯一的修行。", nemesis: "Matheson五楼的咳嗽声", partner: "钢铁侠", enemy: "杰克船长", character: "蝙蝠侠：低调但高效的独行侠，夜间是他的黄金时间（占位）。" },
+            "CGHE": { name: "神探夏洛克", ip: "Sherlock Holmes", motto: "平凡的校园生活只会让大脑生锈。", desc: "极高智商，低耗电模式。住在繁华中心但只活在自己的逻辑里。", nemesis: "缺乏逻辑的沟通", partner: "灭霸", enemy: "罗恩·韦斯莱", character: "神探夏洛克：逻辑驱动，偏爱理性与推理，社交能量低但洞察力强（占位）。" },
+            "SGOF": { name: "美国队长", ip: "Steve Rogers", motto: "I can do this all day (指的是复习)。", desc: "莫纳什正义化身，Clayton领袖。GPA 4.0且精力无限的六边形战士。", nemesis: "深夜不规律的干扰", partner: "华尔街之狼", enemy: "盖茨比", character: "美国队长：纪律与责任感并重的领袖型人物，永远在为团队带来稳定（占位）。" },
+            "SGOE": { name: "芭比", ip: "Barbie", motto: "在Clayton，每天都是最棒的一天！", desc: "校园社交中心。自带高饱和度光环，总能把平淡的村里生活过出剧集感。", nemesis: "掉妆、8点的早课", partner: "穿普拉达的女王", enemy: "绿巨人", character: "芭比：社交能量满格，擅长制造仪式感与热闹氛围（占位）。" },
+            "SGHF": { name: "灭霸", ip: "Thanos", motto: "只要响指一响，Assignment就会消失一半。", desc: "极度自律。不需要冗余社交，追求效率与秩序的极致化。", nemesis: "所有非必要的聚会", partner: "神探夏洛克", enemy: "杰克船长", character: "灭霸：极致自律的执行者，效率高且目标明确（占位）。" },
+            "SGHE": { name: "甘道夫", ip: "Gandalf", motto: "真正的学霸从不迟到，他总是在想要的时间出现。", desc: "深居简出但洞察全局。只在关键时刻现身，对学术有神秘的掌控力。", nemesis: "不严谨的查重报告", partner: "神探夏洛克", enemy: "钢铁侠", character: "甘道夫：沉稳可靠，关键时刻总能带来转机与指引（占位）。" },
+            "CDOF": { name: "了不起的盖茨比", ip: "Gatsby", motto: "在那盏绿灯熄灭前，我一定能交上我的Essay。", desc: "进场晚，但动静大。在截止日期前爆发惊人能量的浪漫主义者。", nemesis: "23:59的闹钟", partner: "杰克船长", enemy: "美国队长", character: "了不起的盖茨比：浪漫且富有戏剧性，习惯于在压力下绽放（占位）。" },
+            "CDOE": { name: "杰克船长", ip: "Jack Sparrow", motto: "你们会永远记住这一天，因为你们差一点就过不了Assignment！", desc: "策略性生存大师。利用运气与直觉在DDL的海浪中极限冲浪。", nemesis: "条块化的学术规章", partner: "盖茨比", enemy: "灭霸", character: "杰克船长：机智狡黠、善用运气与策略化解危机的幸存者（占位）。" },
+            "CDHF": { name: "钢铁侠 (Iron Man)", ip: "Tony Stark", motto: "我不需要睡觉，我只需要能量棒和红牛。", desc: "天才熬夜选手。靠咖啡因和高科技在凌晨创造奇迹，社交电量极低。", nemesis: "低电量预警", partner: "蝙蝠侠", enemy: "甘道夫", character: "钢铁侠：技术天赋与创造力并重，夜间效率极高的创作者（占位）。" },
+            "CDHE": { name: "大雄 (Nobita)", ip: "野比大雄", motto: "多啦A梦，快借我一个写Assignment的道具！", desc: "极致的能量节省模式。在截止日期前会产生极强的求助防御机制。", nemesis: "所有形式的硬核测试", partner: "罗恩·韦斯莱", enemy: "华尔街之狼", character: "大雄：温和且依赖外部帮助，面对挑战时更易寻求支援（占位）。" },
+            "SDOF": { name: "家人侠 (Dom)", ip: "Dominic Toretto", motto: "Family！", desc: "由于对固定圈子的极高忠诚度，成为了东南区的社交联结枢纽。", nemesis: "孤军奋战的场景", partner: "芭比", enemy: "灭霸", character: "家人侠：重视圈内关系与忠诚，是社交网络中的核心连接者（占位）。" },
+            "SDOE": { name: "罗恩·韦斯莱", ip: "Ron Weasley", motto: "为什么总是我？我只是想在东南区吃个鸡腿。", desc: "平凡中的幸存者。虽推崇能量节省，但在关键时刻总能被动通关。", nemesis: "高难度的实操Lab", partner: "大雄", enemy: "神探夏洛克", character: "罗恩：朴实可靠，偶尔被命运推着前进，但总能完成任务（占位）。" },
+            "SDHF": { name: "绿巨人 (Hulk)", ip: "Bruce Banner", motto: "不要激怒我，否则我会把电脑屏幕拍碎！", desc: "平时温和沉默。一旦进入压力峰值会瞬间爆发，横扫所有论文任务。", nemesis: "崩溃的系统更新", partner: "钢铁侠", enemy: "芭比", character: "绿巨人：通常温和但在压力下爆发，具备惊人的能量与执行力（占位）。" },
+            "SDHE": { name: "阿甘 (Gump)", ip: "Forrest Gump", motto: "生活就像一盒巧克力，你永远不知道下一门会不会挂。", desc: "对外部环境极度钝感。保持简单的生活逻辑，在莫纳什长跑中稳健前行。", nemesis: "复杂的规则逻辑", partner: "水豚", enemy: "穿普拉达的女王", character: "阿甘：简单而稳健，脚踏实地的长跑选手型人物（占位）。" },
+            "ALCH": { name: "绝命酒蒙子", ip: "雷神索尔 (Thor)", motto: "我的血液里80%是酒，20%是Clayton的妖风。", desc: "莫纳什酒精亚文化的灵魂使者。比起绩点，更在意今夜的酒精浓度。", nemesis: "任何禁酒规定", partner: "杰克船长", enemy: "早八人", character: "绝命酒蒙子：嗜酒放纵型人物，社交与夜生活是其核心特色（占位）。" },
+            "B-B-B-B": { name: "莫纳什水豚", ip: "Capybara", motto: "只要我不发疯，Clayton的妖风就吹不到我。", desc: "情绪极度稳定。在City与郊区、卷与躺之间达成了某种神秘的禅意平衡。", nemesis: "所有的突发干扰", partner: "阿甘", enemy: "混乱制造者", character: "莫纳什水豚：情绪稳定、从容不迫，擅长在纷扰中保持平衡（占位）。" }
         };
 
         const questions = [
@@ -414,6 +420,8 @@
             document.getElementById('result-partner').innerText = res.partner;
             document.getElementById('result-enemy').innerText = res.enemy;
             document.getElementById('result-image').src = `./assets/${code}.png`;
+            // 填充角色介绍（优先使用 res.character，如果没有则显示占位）
+            document.getElementById('result-character-text').innerText = res.character || '该角色的详细介绍尚未填写，后续将针对不同类型补充内容。';
         }
 
         function openArchive() {
