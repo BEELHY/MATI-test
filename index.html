@@ -43,6 +43,7 @@
             </div>
             <h2 id="question-text" class="text-xl font-bold text-slate-800 mb-8 leading-snug min-h-[5rem]"></h2>
             <div id="options-container" class="space-y-3"></div>
+                <div id="nav-controls" class="mt-4"></div>
         </div>
 
         <div id="result-screen" class="hidden fade-in">
@@ -72,7 +73,7 @@
                 <div class="mt-8 space-y-3">
                     <button onclick="generateShareImage()" class="w-full py-4 bg-green-600 text-white font-bold rounded-2xl shadow-lg text-sm flex items-center justify-center active:scale-95">📸 生成认证海报</button>
                     <button onclick="openArchive()" class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-lg text-sm active:scale-95">📂 莫纳什人格档案</button>
-                    <button onclick="location.reload()" class="w-full py-4 text-slate-300 font-bold text-xs uppercase tracking-widest">Retake the test</button>
+                    <button onclick="retakeTest()" class="w-full py-4 text-slate-300 font-bold text-xs uppercase tracking-widest">Retake the test</button>
                 </div>
             </div>
         </div>
@@ -243,36 +244,127 @@
         ];
 
         let currentIndex = 0;
+        const totalQuestions = questions.length;
+        let selections = Array(totalQuestions).fill(null);
+        const AUTO_ADVANCE = true; // 已选择自动前进
+
         let score = { C:0, S:0, G:0, D:0, O:0, H:0, F:0, E:0 };
         let bScore = 0; let alcCount = 0;
+
+        function saveState(){
+            try{
+                const payload = { currentIndex, selections };
+                localStorage.setItem('mati_state', JSON.stringify(payload));
+            }catch(e){console.warn('saveState failed', e)}
+        }
+
+        function loadState(){
+            try{
+                const raw = localStorage.getItem('mati_state');
+                if(!raw) return;
+                const obj = JSON.parse(raw);
+                if(typeof obj.currentIndex === 'number' && Array.isArray(obj.selections)){
+                    if(obj.selections.length === totalQuestions){
+                        currentIndex = obj.currentIndex;
+                        selections = obj.selections;
+                    }
+                }
+            }catch(e){ console.warn('loadState failed', e) }
+        }
+
+        function selectOption(optionIndex){
+            selections[currentIndex] = optionIndex;
+            saveState();
+            renderQuestion();
+            if(AUTO_ADVANCE){
+                setTimeout(() => { if(currentIndex < totalQuestions - 1) goNext(); else if(selections[currentIndex] !== null) showResult(); }, 150);
+            }
+        }
+
+        function goPrev(){
+            if(currentIndex <= 0) return;
+            currentIndex--;
+            saveState();
+            renderQuestion();
+        }
+
+        function goNext(){
+            if(currentIndex >= totalQuestions - 1) return;
+            currentIndex++;
+            saveState();
+            renderQuestion();
+        }
+
+        function retakeTest(){
+            localStorage.removeItem('mati_state');
+            selections = Array(totalQuestions).fill(null);
+            currentIndex = 0;
+            location.reload();
+        }
 
         function startTest() {
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('question-screen').classList.remove('hidden');
+            loadState();
             renderQuestion();
         }
 
         function renderQuestion() {
             const data = questions[currentIndex];
             document.getElementById('progress-num').innerText = String(currentIndex + 1).padStart(2, '0');
-            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / 20) * 100}%`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / totalQuestions) * 100}%`;
             document.getElementById('question-text').innerText = data.q;
             const container = document.getElementById('options-container');
             container.innerHTML = '';
-            data.opts.forEach(opt => {
+            data.opts.forEach((opt, idx) => {
                 const b = document.createElement('button');
                 b.className = "w-full text-left p-4 border-2 border-slate-100 rounded-2xl hover:border-monash hover:bg-blue-50 transition-all font-medium text-slate-700 bg-white active:scale-[0.98] text-sm leading-snug";
                 b.innerText = opt.text;
+                if(selections[currentIndex] === idx){
+                    b.className += ' border-monash bg-blue-50';
+                }
                 b.onclick = () => {
-                    const w = opt.w || 1.0;
-                    if(opt.val === 'B') bScore += w;
-                    if(opt.isAlc) alcCount++;
-                    if(opt.val !== 'B') score[opt.val] += w;
-                    currentIndex++;
-                    if(currentIndex < 20) renderQuestion(); else showResult();
+                    selectOption(idx);
                 };
                 container.appendChild(b);
             });
+
+            // Nav controls
+            const nav = document.getElementById('nav-controls');
+            nav.innerHTML = '';
+            const navWrap = document.createElement('div');
+            navWrap.className = 'flex items-center gap-3';
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'px-4 py-2 rounded-2xl bg-slate-100 text-sm font-bold text-slate-700';
+            prevBtn.innerText = '上一题';
+            prevBtn.onclick = goPrev;
+            prevBtn.disabled = currentIndex === 0;
+            prevBtn.style.opacity = prevBtn.disabled ? '0.5' : '1';
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'px-4 py-2 rounded-2xl bg-monash text-white text-sm font-bold';
+            nextBtn.innerText = currentIndex === totalQuestions - 1 ? '提交' : '下一题';
+            nextBtn.onclick = () => {
+                if(currentIndex === totalQuestions - 1){
+                    if(selections[currentIndex] !== null) showResult();
+                } else {
+                    goNext();
+                }
+            };
+            // disable next until answered
+            nextBtn.disabled = selections[currentIndex] === null;
+            nextBtn.style.opacity = nextBtn.disabled ? '0.6' : '1';
+
+            const counter = document.createElement('div');
+            counter.className = 'ml-auto text-xs text-slate-500';
+            const answered = selections.filter(s => s !== null).length;
+            counter.innerText = `${answered} / ${totalQuestions}`;
+
+            navWrap.appendChild(prevBtn);
+            navWrap.appendChild(nextBtn);
+            navWrap.appendChild(counter);
+            nav.appendChild(navWrap);
         }
 
         function tieBreaker(val1, val2, char1, char2) {
@@ -281,6 +373,22 @@
         }
 
         function showResult(forcedCode = null) {
+            // If no forced code, compute scores from selections
+            if(!forcedCode){
+                // reset
+                score = { C:0, S:0, G:0, D:0, O:0, H:0, F:0, E:0 };
+                bScore = 0; alcCount = 0;
+                for(let i=0;i<totalQuestions;i++){
+                    const sel = selections[i];
+                    if(sel === null || typeof sel === 'undefined') continue;
+                    const opt = questions[i].opts[sel];
+                    const w = opt.w || 1.0;
+                    if(opt.val === 'B') bScore += w;
+                    if(opt.isAlc) alcCount++;
+                    if(opt.val !== 'B') score[opt.val] += w;
+                }
+            }
+
             document.getElementById('question-screen').classList.add('hidden');
             document.getElementById('result-screen').classList.remove('hidden');
             window.scrollTo(0,0);
