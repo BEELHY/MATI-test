@@ -19,7 +19,7 @@
     <div class="bg-white rounded-[2rem] shadow-2xl max-w-lg w-full overflow-hidden border border-white relative">
         
         <div class="absolute top-4 right-6 text-[10px] font-black text-slate-300 uppercase tracking-widest z-10">welcome to monash alumni</div>
-        <div class="absolute bottom-5 left-6 text-[6px] font-black text-slate-300 uppercase tracking-widest z-10">设计+脚本：月色如水  文案：chloe</div>
+        <div class="absolute bottom-1 left-6 text-[6px] font-black text-slate-300 uppercase tracking-widest z-10">设计+脚本：月色如水  文案：chloe</div>
 
         <div id="welcome-screen" class="p-10 text-center fade-in">
             <h1 class="text-5xl font-black text-slate-900 mb-2 italic tracking-tighter">MATI</h1>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="mt-8 space-y-3">
                     <button id="toggle-character-btn" onclick="toggleCharacter()" class="w-full py-3 bg-slate-100 text-monash font-bold rounded-2xl shadow-sm text-sm">查看角色内核</button>
-                    <button onclick="generateShareImage()" class="w-full py-4 bg-green-600 text-white font-bold rounded-2xl shadow-lg text-sm flex items-center justify-center active:scale-95">📸 分享测试海报</button>
+                    <button onclick="generateShareImage()" class="w-full py-4 bg-green-600 text-white font-bold rounded-2xl shadow-lg text-sm flex items-center justify-center active:scale-95">📸 生成测试海报</button>
                     <button onclick="openArchive()" class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-lg text-sm active:scale-95">📂 查看所有莫纳什人格档案</button>
                     <button onclick="retakeTest()" class="w-full py-4 text-slate-300 font-bold text-xs uppercase tracking-widest">Retake the test</button>
                 </div>
@@ -125,10 +125,11 @@
                             <div class="text-left leading-tight">
                                 <p class="text-[10px] text-slate-400 font-bold uppercase">Candidate</p>
                                 <p class="text-[11px] font-black text-monash italic">MCSA 校友会成员</p>
-                                <p class="text-[11px] font-black text-monash italic">扫码参与测试</p>
+                                <p class="text-[11px] font-black text-monash italic">请截图分享至社交媒体</p>
                             </div>
                             <div class="w-14 h-14 bg-white rounded p-0.5 shadow-sm border border-slate-100 overflow-hidden shrink-0">
                                 <img src="./assets/Share.png" alt="QR Code" class="w-full h-full object-contain">
+                                <p class="text-[11px] font-black text-monash italic">扫码参与测试</p>
                             </div>
                         </div>
                     </div>
